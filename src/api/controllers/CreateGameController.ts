@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Route } from "tsoa";
-import { GameRepository } from "../../contexts/games/domain/GameRepository";
+import { GameRepository } from "@contexts/games/domain/GameRepository";
 
 @Route("game")
 export class CreateGameController extends Controller {
