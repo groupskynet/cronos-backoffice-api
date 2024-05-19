@@ -7,6 +7,14 @@
     "specVersion": 3
   },
   "routes": {
-    "routesDir": "build"
+    "routesDir": "build",
+    "iocModule": "src/contexts/shared/infrastructure/dependency_injection/ioc"
+  },
+  "compilerOptions": {
+    "paths": {
+      "baseUrl": "./",
+      "src/@": "src/*",
+      "@contexts/*": "src/contexts/*"
+    }
   }
 }
