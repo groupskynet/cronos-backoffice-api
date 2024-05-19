@@ -8,7 +8,7 @@
   },
   "routes": {
     "routesDir": "build",
-    "iocModule": "src/contexts/shared/infrastructure/dependency_injection/ioc"
+    "iocModule": "src/ioc"
   },
   "compilerOptions": {
     "paths": {

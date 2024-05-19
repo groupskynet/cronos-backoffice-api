@@ -4,7 +4,7 @@
 import { TsoaRoute, fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CreateGameController } from './../src/api/controllers/CreateGameController';
-import { iocContainer } from './../src/contexts/shared/infrastructure/dependency_injection/ioc';
+import { iocContainer } from './../src/ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
