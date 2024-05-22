@@ -1,3 +1,7 @@
+import { Game } from "./Game";
+
 export abstract class GameRepository {
-  abstract save(): Promise<void>;
+
+  abstract save(game: Game): Promise<void>;
+
 }

@@ -3,7 +3,7 @@ aws events put-events \
 	--region us-east-1 \
 	--entries '[{
 		"EventBusName": "codely.domain_events",
-		"Source": "codely",
+		"Source": "cronos.backoffice",
 		"DetailType": "balls.generated",
 		"Detail": "{ \"user_id\": \"123\", \"email\": \"javi@hola.com\" }"
 	}]'
