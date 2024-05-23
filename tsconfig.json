@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "types": [
-      "@types/node"
-    ],
+    "types": ["@types/node"],
     /* Basic Options */
     "incremental": true,
     "target": "ES2022",
