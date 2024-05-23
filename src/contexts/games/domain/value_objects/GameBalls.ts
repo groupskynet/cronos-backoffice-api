@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from "@src/contexts/shared/domain/InvalidArgumentError";
+import { InvalidArgumentError } from "@src/contexts/shared/domain/exceptions/InvalidArgumentError";
 
 export class GameBalls {
     readonly value: number[];

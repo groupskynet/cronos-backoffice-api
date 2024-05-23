@@ -7,7 +7,8 @@
     "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
     "build": "tsoa spec-and-routes && tsc && tsc-alias -p tsconfig.json",
     "start": "node build/src/app.js",
-    "configure-eventbridge_sqs": "ts-node -r  tsconfig-paths/register ./src/scripts/configure-eventbridge_sqs.ts"
+    "configure-eventbridge_sqs": "ts-node -r  tsconfig-paths/register ./src/scripts/configure-eventbridge_sqs.ts",
+    "consume_sqs": "ts-node -r tsconfig-paths/register ./src/scripts/consume-sqs.ts"
   },
   "keywords": [],
   "author": "",
