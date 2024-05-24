@@ -1,11 +1,11 @@
-import { ValueObject } from "./ValueObject";
+import { ValueObject } from "./ValueObject"
 
 export abstract class DateValueObject extends ValueObject<Date> {
     constructor(readonly value: Date) {
-        super(value);
+        super(value)
     }
 
     toString(): string {
-        return this.value.toISOString();
+        return this.value.toISOString()
     }
 }
