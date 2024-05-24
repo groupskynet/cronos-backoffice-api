@@ -1,8 +1,8 @@
 import { DomainEventSubscriber } from '@src/contexts/shared/domain/event/DomainEventSuscriber';
-import { BallsGeneratedDomainEvent } from '../domain/BallsGeneratedDomainEvent';
-import { CreateNewGame } from './CreateNewGame';
 import { DomainEventClass } from '@src/contexts/shared/domain/event/DomainEventClass';
 import { Service } from 'diod';
+import { BallsGeneratedDomainEvent } from '../../domain/domain_events/BallsGeneratedDomainEvent';
+import { CreateNewGame } from '../CreateNewGame';
 
 @Service()
 export class CreateNewGameOnBallsGenerated implements DomainEventSubscriber<BallsGeneratedDomainEvent> {

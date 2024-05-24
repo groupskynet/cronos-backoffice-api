@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Route } from "tsoa";
+import { Controller, Post, Route } from "tsoa";
 
 @Route("game")
 export class CreateGameController extends Controller {
@@ -7,10 +7,8 @@ export class CreateGameController extends Controller {
   }
 
   @Post("/create")
-  public async createGame(@Body() request: any) {
-    console.log("request ->", request);
+  public async createGame() {
     this.setStatus(200);
-    
     return;
   }
 }

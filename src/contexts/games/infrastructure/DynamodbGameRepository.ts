@@ -1,4 +1,4 @@
-import { GameRepository } from "../domain/GameRepository";
+import { GameRepository } from "../domain/contracts/GameRepository";
 
 export class DynamodbGameRepository implements GameRepository {
   save(): Promise<void> {

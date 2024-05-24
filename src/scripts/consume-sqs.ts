@@ -23,13 +23,14 @@ const deserializer = new DomainEventJsonDeserializer(eventMapping);
 
 const sqsClient = new SQSClient({
   region: 'us-east-1',
+  endpoint: 'http://127.0.0.1:4566',
 });
 
 async function main(): Promise<void> {
   await Promise.all(
     subscribers.flatMap((subscriber) => {
       const queueName = subscriber.name().replaceAll('.', '-');
-      const queueUrl = `https://sqs.us-east-1.amazonaws.com/992382584577/${queueName}`;
+      const queueUrl = `https://sqs.us-east-1.amazonaws.com/000000000000/${queueName}`;
 
       console.log(`Consuming from queue: ${queueUrl}`);
 

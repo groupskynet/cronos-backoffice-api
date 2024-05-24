@@ -42,8 +42,6 @@ const subscribers = container
   .findTaggedServiceIdentifiers<DomainEventSubscriber<DomainEvent>>('subscriber')
   .map((id) => container.get(id));
 
-console.log('subscribers ->', subscribers);
-
 const queues: QueueConfig[] = subscribers.map((subscriber) => ({
   name: subscriber.name().replaceAll('.', '-'),
   rulePattern: subscriber.subscribedTo().map((event) => event.eventName),
