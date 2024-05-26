@@ -11,66 +11,66 @@ import swaggerUi from 'swagger-ui-express'
 import { RegisterRoutes } from '../build/routes'
 
 export class Server {
-  private readonly express: express.Express
-  private readonly port: string
-  private httpServer?: http.Server
+	private readonly express: express.Express
+	private readonly port: string
+	private httpServer?: http.Server
 
-  constructor(port: string) {
-    this.port = port
-    this.express = express()
-    this.express.use(json())
-    this.express.use(urlencoded({ extended: true }))
-    this.express.use(helmet.xssFilter())
-    this.express.use(helmet.noSniff())
-    this.express.use(helmet.hidePoweredBy())
-    this.express.use(helmet.frameguard({ action: 'deny' }))
-    this.express.use(compress())
-    const router = Router()
-    router.use(errorHandler())
-    this.express.use(router)
+	constructor(port: string) {
+		this.port = port
+		this.express = express()
+		this.express.use(json())
+		this.express.use(urlencoded({ extended: true }))
+		this.express.use(helmet.xssFilter())
+		this.express.use(helmet.noSniff())
+		this.express.use(helmet.hidePoweredBy())
+		this.express.use(helmet.frameguard({ action: 'deny' }))
+		this.express.use(compress())
+		const router = Router()
+		router.use(errorHandler())
+		this.express.use(router)
 
-    RegisterRoutes(this.express)
+		RegisterRoutes(this.express)
 
-    this.express.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
-      return res.send(swaggerUi.generateHTML(await import('../build/swagger.json')))
-    })
+		this.express.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
+			return res.send(swaggerUi.generateHTML(await import('../build/swagger.json')))
+		})
 
-    router.use((err: Error, _: Request, res: Response) => {
-      console.log(err)
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message)
-    })
-  }
+		router.use((err: Error, _: Request, res: Response, _next: () => void) => {
+			console.log(err)
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message)
+		})
+	}
 
-  async listen(): Promise<void> {
-    return new Promise((resolve) => {
-      const env = this.express.get('env') as string
-      this.httpServer = this.express.listen(this.port, () => {
-        console.log(` Mock Backend App is running at http://localhost:${this.port} in ${env} mode`)
-        console.log('  Press CTRL-C to stop\n')
-        resolve()
-      })
-    })
-  }
+	async listen(): Promise<void> {
+		return new Promise((resolve) => {
+			const env = this.express.get('env') as string
+			this.httpServer = this.express.listen(this.port, () => {
+				console.log(` Mock Backend App is running at http://localhost:${this.port} in ${env} mode`)
+				console.log('  Press CTRL-C to stop\n')
+				resolve()
+			})
+		})
+	}
 
-  getHTTPServer(): Server['httpServer'] {
-    return this.httpServer
-  }
+	getHTTPServer(): Server['httpServer'] {
+		return this.httpServer
+	}
 
-  async stop(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (this.httpServer) {
-        this.httpServer.close((error) => {
-          if (error) {
-            reject(error)
+	async stop(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			if (this.httpServer) {
+				this.httpServer.close((error) => {
+					if (error) {
+						reject(error)
 
-            return
-          }
+						return
+					}
 
-          resolve()
-        })
-      }
+					resolve()
+				})
+			}
 
-      resolve()
-    })
-  }
+			resolve()
+		})
+	}
 }

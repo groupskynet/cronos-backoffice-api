@@ -1,12 +1,13 @@
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
+// @ts-check
+const eslint = require('@eslint/js');
+const tseslint = require('typescript-eslint')
 
-export default tseslint.config({
-  files: ['src/**/*.ts'],
-  extends: [eslint.configs.recommended, ...tseslint.configs.recommended],
-  ignores: ['**/*.config.js'],
-  rules: {
-    'no-console': 'off',
-    semi: ['error', 'never']
-  }
-})
+module.exports = tseslint.config({
+ files: ['**/*.ts'],
+ extends: [eslint.configs.recommended, ...tseslint.configs.recommended],
+ rules: {
+  '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
+  'no-console' : 'warn',
+  'semi': ['error', 'never']
+ }
+});
