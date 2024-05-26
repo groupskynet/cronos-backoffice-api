@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
     "build": "tsoa spec-and-routes && tsc && tsc-alias -p tsconfig.json",
