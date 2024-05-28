@@ -1,19 +1,22 @@
 import { Server } from './server'
 
 export class Bootstrap {
-  server?: Server
+	server: Server
 
-  async start(): Promise<void> {
-    const port = process.env.port ?? '3000'
-    this.server = new Server(port)
-    this.server.listen()
-  }
+	constructor() {
+		const port = process.env.port ?? '3000'
+		this.server = new Server(port)
+	}
 
-  get httpServer(): Server['httpServer'] | undefined {
-    return this.server?.getHTTPServer()
-  }
+	async start(): Promise<void> {
+		this.server.listen()
+	}
 
-  async stop(): Promise<void> {
-    return this.server?.stop()
-  }
+	get httpServer(): Server['httpServer'] | undefined {
+		return this.server.getHTTPServer()
+	}
+
+	async stop(): Promise<void> {
+		return this.server.stop()
+	}
 }

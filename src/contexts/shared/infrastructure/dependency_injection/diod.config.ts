@@ -1,12 +1,12 @@
 import { ContainerBuilder } from 'diod'
 import { glob } from 'glob'
 
-import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
-import { CreateNewGame } from '@contexts/games/application/CreateNewGame'
 import { EventBus } from '../../domain/event/EventBus'
 import { AwsEventBridgeEventBus } from '../event_bus/AwsEventBridgeEventBus'
-import { GameRepository } from '@src/contexts/games/domain/contracts/GameRepository'
 import { CreateNewGameOnBallsGenerated } from '@src/contexts/games/application/domain_events/CreateNewGameOnBallsGenerate'
+import { GameRepository } from '@contexts/games/domain/contracts/GameRepository'
+import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
+import { CreateNewGame } from '@contexts/games/application/CreateNewGame'
 
 const builder = new ContainerBuilder()
 
@@ -17,7 +17,7 @@ controllers.map((controller) => {
 	const className = match ? match[1] : ''
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const object = require(controller)
-	builder.registerAndUse(object[className])
+	builder.registerAndUse(object[className]).asSingleton()
 })
 
 builder.register(GameRepository).use(DynamodbGameRepository)

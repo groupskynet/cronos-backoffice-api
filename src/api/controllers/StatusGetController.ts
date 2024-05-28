@@ -7,7 +7,7 @@ export class StatusGetController extends Controller {
 		super()
 	}
 
-	@Get('/health')
+	@Get('/')
 	run() {
 		this.setStatus(httpStatus.OK)
 	}

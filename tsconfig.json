@@ -3,7 +3,7 @@
     "types": ["@types/node"],
     /* Basic Options */
     "incremental": true,
-    "target": "ES2022",
+    "target": "ESNEXT",
     "module": "commonjs",
     "outDir": "build",
     /* Strict Type-Checking Options */
