@@ -1,7 +1,7 @@
-import { DomainEvent, DomainEventAttributes } from '@contexts/shared/domain/event/DomainEvent';
+import { DomainEvent, DomainEventAttributes } from '@contexts/shared/domain/event/DomainEvent'
 
 export class BallsGeneratedDomainEvent extends DomainEvent {
-  static eventName: string = 'cronos.keno.game.balls_generated';
+  static eventName: string = 'cronos.keno.game.balls_generated'
 
   constructor(
     public readonly id: string,
@@ -10,7 +10,7 @@ export class BallsGeneratedDomainEvent extends DomainEvent {
     eventId?: string,
     occurredOn?: Date,
   ) {
-    super(BallsGeneratedDomainEvent.eventName, id, eventId, occurredOn);
+    super(BallsGeneratedDomainEvent.eventName, id, eventId, occurredOn)
   }
 
   toPrimitives(): DomainEventAttributes {
@@ -18,6 +18,6 @@ export class BallsGeneratedDomainEvent extends DomainEvent {
       id: this.id,
       balls: this.balls,
       createdAt: this.createdAt,
-    };
+    }
   }
 }

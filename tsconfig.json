@@ -3,7 +3,7 @@
     "types": ["@types/node"],
     /* Basic Options */
     "incremental": true,
-    "target": "ES2022",
+    "target": "ESNEXT",
     "module": "commonjs",
     "outDir": "build",
     /* Strict Type-Checking Options */
@@ -36,8 +36,9 @@
       "tsoa": ["node_modules/tsoa/dist"],
       "tsoa/": ["node_modules/tsoa/dist/"],
       //core
-      "@src/*": ["src/*"],
-      "@contexts/*": ["src/contexts/*"]
+      "@contexts/*": ["src/contexts/*"],
+      "@controllers/*" : ["src/api/controllers/*"],
+      "@src/*": ["src/*"]
     }
   },
   "include": ["src/**/*", "test/**/**.ts"],
