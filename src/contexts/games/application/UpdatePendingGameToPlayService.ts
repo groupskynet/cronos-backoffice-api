@@ -1,6 +1,8 @@
+import { Service } from 'diod'
 import { GameRepository } from '../domain/contracts/GameRepository'
 import { GameId } from '../domain/value_objects/GameId'
 
+@Service()
 export class UpdatePendingGameToPlayService {
   constructor(private readonly repository: GameRepository) {}
 
@@ -13,4 +15,3 @@ export class UpdatePendingGameToPlayService {
     await this.repository.save(game)
   }
 }
-

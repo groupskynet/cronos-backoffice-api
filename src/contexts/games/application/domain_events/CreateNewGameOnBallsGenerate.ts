@@ -2,11 +2,11 @@ import { DomainEventSubscriber } from '@src/contexts/shared/domain/event/DomainE
 import { DomainEventClass } from '@src/contexts/shared/domain/event/DomainEventClass'
 import { Service } from 'diod'
 import { BallsGeneratedDomainEvent } from '../../domain/domain_events/BallsGeneratedDomainEvent'
-import { CreateNewGame } from '../CreateNewGame'
+import { CreateNewGameService } from '../CreateNewGameService'
 
 @Service()
 export class CreateNewGameOnBallsGenerated implements DomainEventSubscriber<BallsGeneratedDomainEvent> {
-  constructor(private readonly service: CreateNewGame) {}
+  constructor(private readonly service: CreateNewGameService) {}
 
   async on(event: BallsGeneratedDomainEvent): Promise<void> {
     this.service.handle({ id: event.id, balls: event.balls, createdAt: event.createdAt })
