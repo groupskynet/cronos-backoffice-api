@@ -17,7 +17,7 @@ controllers.map((controller) => {
 	const className = match ? match[1] : ''
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const object = require(controller)
-	builder.registerAndUse(object[className]).asSingleton()
+	return builder.registerAndUse(object[className]).asSingleton()
 })
 
 builder.register(GameRepository).use(DynamodbGameRepository)

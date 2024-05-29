@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "types": ["@types/node"],
+    "types": ["@types/node", "jest"],
     /* Basic Options */
     "incremental": true,
-    "target": "ESNEXT",
+    "target": "es2022",
     "module": "commonjs",
     "outDir": "build",
     /* Strict Type-Checking Options */
@@ -22,7 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     /* Module Resolution Options */
     "moduleResolution": "node",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "esModuleInterop": true,
     /* Experimental Options */
     "experimentalDecorators": true,
@@ -41,6 +41,6 @@
       "@src/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "test/**/**.ts"],
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules"]
 }
