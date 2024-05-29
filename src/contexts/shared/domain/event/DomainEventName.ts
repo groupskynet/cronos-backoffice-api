@@ -1,3 +1,3 @@
-import { DomainEvent } from './DomainEvent';
+import { DomainEvent } from './DomainEvent'
 
-export type DomainEventName<T extends DomainEvent> = Pick<T, 'eventName'>;
+export type DomainEventName<T extends DomainEvent> = Pick<T, 'eventName'>

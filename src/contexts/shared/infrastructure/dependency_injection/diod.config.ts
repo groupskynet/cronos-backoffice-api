@@ -1,18 +1,30 @@
-import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository';
-import { CreateNewGame } from '@contexts/games/application/CreateNewGame';
-import { ContainerBuilder } from 'diod';
-import { EventBus } from '../../domain/event/EventBus';
-import { AwsEventBridgeEventBus } from '../event_bus/AwsEventBridgeEventBus';
-import { GameRepository } from '@src/contexts/games/domain/contracts/GameRepository';
-import { CreateNewGameOnBallsGenerated } from '@src/contexts/games/application/domain_events/CreateNewGameOnBallsGenerate';
+import { ContainerBuilder } from 'diod'
+import { glob } from 'glob'
 
-const builder = new ContainerBuilder();
+import { EventBus } from '../../domain/event/EventBus'
+import { AwsEventBridgeEventBus } from '../event_bus/AwsEventBridgeEventBus'
+import { CreateNewGameOnBallsGenerated } from '@src/contexts/games/application/domain_events/CreateNewGameOnBallsGenerate'
+import { GameRepository } from '@contexts/games/domain/contracts/GameRepository'
+import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
+import { CreateNewGame } from '@contexts/games/application/CreateNewGame'
 
-builder.register(GameRepository).use(DynamodbGameRepository);
+const builder = new ContainerBuilder()
 
-builder.registerAndUse(CreateNewGame);
-builder.registerAndUse(CreateNewGameOnBallsGenerated).addTag('subscriber');
+const controllers = glob.sync(`src/**/*Controller.ts`)
 
-builder.register(EventBus).use(AwsEventBridgeEventBus);
+controllers.map((controller) => {
+	const match = controller.match(/\/([^/]+)\.ts$/)
+	const className = match ? match[1] : ''
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const object = require(controller)
+	builder.registerAndUse(object[className]).asSingleton()
+})
 
-export const container = builder.build();
+builder.register(GameRepository).use(DynamodbGameRepository)
+
+builder.registerAndUse(CreateNewGame)
+builder.registerAndUse(CreateNewGameOnBallsGenerated).addTag('subscriber')
+
+builder.register(EventBus).use(AwsEventBridgeEventBus)
+
+export const container = builder.build()
