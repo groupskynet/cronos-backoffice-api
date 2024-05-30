@@ -3,12 +3,12 @@ import { Controller, Get, Route } from 'tsoa'
 
 @Route('status')
 export class StatusGetController extends Controller {
-	constructor() {
-		super()
-	}
+  constructor() {
+    super()
+  }
 
-	@Get('/')
-	run() {
-		this.setStatus(httpStatus.OK)
-	}
+  @Get('/')
+  run() {
+    this.setStatus(httpStatus.OK)
+  }
 }
