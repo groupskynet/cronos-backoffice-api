@@ -5,7 +5,7 @@ import { GameRound } from '../domain/value_objects/GameRound'
 import { EventBus } from '@contexts/shared/domain/event/EventBus'
 
 @Service()
-export class CreateNewGame {
+export class CreateNewGameService {
   constructor(
     private readonly repository: GameRepository,
     private readonly event_bus: EventBus
