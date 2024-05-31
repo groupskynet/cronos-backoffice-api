@@ -1,19 +1,21 @@
-import { UserName } from "./value_objects/user/UserName";
+import { Entity } from "@contexts/shared/domain/Entity"
+import { UserName } from "./value_objects/user/UserName"
+import { UserDto } from "./interfaces/UserDto"
 
-export class User{
-    private _name: UserName;
-    constructor({name}: {name: UserName}){
-        this._name = name;
+export class User extends Entity{
+    private _name: UserName
+    constructor({id,name}: {id: string,name: UserName}){
+        super({id})
+        this._name = name
     }
-    static create(nameIn: string): User{
-        const name = new UserName(nameIn);
+    static create({id, name}: UserDto): User{
 
-        const user = new User({name});
+        const user = new User({id,name: new UserName(name)})
 
-        return user;
+        return user
     } 
 
     get name(): string{
-        return this._name.value;
+        return this._name.value
     }
 }

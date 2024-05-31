@@ -1,19 +1,16 @@
 import { AggregateRoot } from '@contexts/shared/domain/AggregateRoot'
 import { GameBalls } from './value_objects/GameBalls'
-import { GameId } from './value_objects/GameId'
 import { GameDate } from './value_objects/GameDate'
 import { GameRound } from './value_objects/GameRound'
 
 export class Game extends AggregateRoot {
-  private _id: GameId
   private _balls: GameBalls
   private createdAt: GameDate
   private _round: GameRound
   private _status: 'PENDING' | 'PLAYED'
 
-  constructor(id: GameId, balls: GameBalls, round: GameRound, createdAt: GameDate, status: 'PENDING' | 'PLAYED') {
-    super()
-    this._id = id
+  constructor(id: string, balls: GameBalls, round: GameRound, createdAt: GameDate, status: 'PENDING' | 'PLAYED') {
+    super({id})
     this._balls = balls
     this.createdAt = createdAt
     this._round = round
@@ -22,7 +19,7 @@ export class Game extends AggregateRoot {
 
   static create(id: string, balls: number[], createdAt: Date, round: string): Game {
     const game = new Game(
-      new GameId(id),
+      id,
       new GameBalls(balls),
       new GameRound(round),
       new GameDate(createdAt),
@@ -36,9 +33,6 @@ export class Game extends AggregateRoot {
     this._status = 'PLAYED'
   }
 
-  get id(): string {
-    return this._id.value
-  }
 
   get status(): string {
     return this._status

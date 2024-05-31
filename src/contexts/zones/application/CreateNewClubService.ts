@@ -1,8 +1,10 @@
 import { DemographyDto } from "@contexts/shared/domain/interfaces/DemographyDto"
 import { ZoneRepository } from "../domain/contracts/ZoneRepository"
 import { EventBus } from '@contexts/shared/domain/event/EventBus'
+import { Service } from "diod"
 
-export class CreateNewClub{
+@Service()
+export class CreateNewClubService{
     constructor(private readonly repository: ZoneRepository,
         private readonly event_bus: EventBus
     ){}

@@ -14,20 +14,20 @@ export class Zone extends AggregateRoot{
     private _clubs: Club[]
     private _demography: Demography
 
-    constructor({currency,demography, user}: ZoneDto){
-        super()
+    constructor({id,currency,demography, user}: ZoneDto){
+        super({id})
         this._currency = currency
         this._demography = demography
         this._user = user
         this._clubs = []
     }
 
-    static create({demographyDto, userName, currencyIn}: ZoneIn): Zone{
+    static create({id,demographyDto,userDto, currencyIn}: ZoneIn): Zone{
         const demography = new Demography(demographyDto)
-        const user = User.create(userName)
+        const user = User.create(userDto)
         const currency = new ZoneCurrency(currencyIn)
 
-        const zone = new Zone({demography,user,currency})
+        const zone = new Zone({id,demography,user,currency})
 
         return zone
     }
@@ -45,14 +45,14 @@ export class Zone extends AggregateRoot{
         return this._clubs
     }
 
-    public addClub(clubDemography: DemographyDto): void{
+    public addClub(demographyDto: DemographyDto): void{
 
-        const clubExist = this.clubs.filter( x => x.demography.name.value === clubDemography.name)
+        const clubExist = this.clubs.find( x => x.demography.name.value === demographyDto.name)
 
         if(clubExist)
-            throw new InvalidArgumentError(`The area already has a club with this name ${clubDemography.name}`)
+            throw new InvalidArgumentError(`The area already has a club with this name ${demographyDto.name}`)
 
-        const club = Club.cereate({demographyDto: clubDemography})
+        const club = Club.cereate({demographyDto})
 
         this._clubs.push(club)
     }

@@ -2,12 +2,14 @@
 import { Demography } from "@src/contexts/shared/domain/value_objects/Demography"
 import { User } from "./User"
 import { DemographyDto } from "@src/contexts/shared/domain/interfaces/DemographyDto"
+import { Entity } from "@contexts/shared/domain/Entity"
 
 
-export class Club{
+export class Club extends Entity{
     private _recorders: User[]
     private _demography: Demography
-    constructor({demography}: {demography: Demography}) {
+    constructor({id,demography}: {id: string, demography: Demography}) {
+        super({id})
         this._demography = demography
         this._recorders = []
     }
@@ -15,14 +17,9 @@ export class Club{
 
         const demography = new Demography(demographyDto)
 
-        const club = new Club({demography})
+        const club = new Club({id: demographyDto.id,demography})
         
         return club
-    }
-
-    public addRecorder(recorderName: string){
-        const recorder = User.create(recorderName)
-        this._recorders.push(recorder)
     }
 
     get demography(): Demography{
