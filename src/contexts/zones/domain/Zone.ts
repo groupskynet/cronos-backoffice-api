@@ -8,8 +8,10 @@ import { ZoneIn } from "./interfaces/ZoneIn"
 import { InvalidArgumentError } from "@contexts/shared/domain/exceptions/InvalidArgumentError"
 import { AggregateRoot } from "@contexts/shared/domain/AggregateRoot"
 
+
 export class Zone extends AggregateRoot{
     private _currency: ZoneCurrency
+    private _balance: number
     private _user: User
     private _clubs: Club[]
     private _demography: Demography
@@ -20,6 +22,7 @@ export class Zone extends AggregateRoot{
         this._demography = demography
         this._user = user
         this._clubs = []
+        this._balance = 0
     }
 
     static create({id,demographyDto,userDto, currencyIn}: ZoneIn): Zone{
@@ -41,6 +44,9 @@ export class Zone extends AggregateRoot{
     get user(): User{
         return this._user
     }
+    get balance(): number{
+        return this._balance
+    }
     get clubs(): Club[]{
         return this._clubs
     }
@@ -56,4 +62,39 @@ export class Zone extends AggregateRoot{
 
         this._clubs.push(club)
     }
+
+    public editBalance(newBalance: number, isAdd: boolean, clubId: string = ''): void{
+
+        if(newBalance <= 0) throw new InvalidArgumentError(`The new balance incorrect, must be positive`)
+
+        if(isAdd && clubId && (this._balance - newBalance) < 0) throw new InvalidArgumentError(`The balance of the zone cannot be negative`)
+
+        if(clubId){
+            this.editBalanceClub(newBalance,isAdd,clubId)
+        }else{
+            if(isAdd){
+                this._balance += newBalance
+            }else{
+                this._balance -= newBalance
+            }
+        }
+        
+    }
+
+    private editBalanceClub(newBalance: number, isAdd: boolean, clubId: string){
+
+        const club = this._clubs.find( x => x.id === clubId)
+        
+        if(!club) throw new InvalidArgumentError(`Club ${clubId} was not found`)
+        
+        if(isAdd){
+            club.addBalance(newBalance)
+        }else{
+            club.substractBalance(newBalance)
+        }
+        this._clubs = this._clubs.filter( x => x.id !== clubId)
+        
+        this.editBalance(newBalance,!isAdd)
+    }
 }
+

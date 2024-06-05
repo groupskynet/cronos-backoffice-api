@@ -9,7 +9,13 @@ import { StatusGetController } from './../src/api/controllers/StatusGetControlle
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CreateGameController } from './../src/api/controllers/CreateGameController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { CreateNewClubController } from '../src/api/controllers/clubs/CreateNewClubController';
+import { GetClubsController } from './../src/api/controllers/zone/GetClubsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { EditBalanceController } from './../src/api/controllers/zone/EditBalanceController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { GetRecordersController } from './../src/api/controllers/clubs/GetRecordersController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CreateNewClubController } from './../src/api/controllers/clubs/CreateNewClubController';
 import { iocContainer } from './../src/ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -19,19 +25,24 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "ReadableStream_Uint8Array_": {
+    "RequestEditBalance": {
         "dataType": "refObject",
         "properties": {
-            "locked": {"dataType":"boolean","required":true},
+            "newBalance": {"dataType":"double","required":true},
+            "isAdd": {"dataType":"boolean","required":true},
+            "idClub": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Body": {
+    "RequestCreateClub": {
         "dataType": "refObject",
         "properties": {
-            "body": {"dataType":"union","subSchemas":[{"ref":"ReadableStream_Uint8Array_"},{"dataType":"enum","enums":[null]}],"required":true},
-            "bodyUsed": {"dataType":"boolean","required":true},
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "balance": {"dataType":"double","required":true},
+            "address": {"dataType":"string","required":true},
+            "timeZone": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -150,6 +161,113 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/zone/get-clubs/:id',
+            ...(fetchMiddlewares<RequestHandler>(GetClubsController)),
+            ...(fetchMiddlewares<RequestHandler>(GetClubsController.prototype.getAll)),
+
+            async function GetClubsController_getAll(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<GetClubsController>(GetClubsController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'getAll',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/zone/update-balance/:id',
+            ...(fetchMiddlewares<RequestHandler>(EditBalanceController)),
+            ...(fetchMiddlewares<RequestHandler>(EditBalanceController.prototype.editBalance)),
+
+            async function EditBalanceController_editBalance(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"RequestEditBalance"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<EditBalanceController>(EditBalanceController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'editBalance',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/club/get-recorders',
+            ...(fetchMiddlewares<RequestHandler>(GetRecordersController)),
+            ...(fetchMiddlewares<RequestHandler>(GetRecordersController.prototype.GetRecorders)),
+
+            async function GetRecordersController_GetRecorders(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    idZone: {"in":"query","name":"idZone","required":true,"dataType":"string"},
+                    idClub: {"in":"query","name":"idClub","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<GetRecordersController>(GetRecordersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'GetRecorders',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/club/create/:id',
             ...(fetchMiddlewares<RequestHandler>(CreateNewClubController)),
             ...(fetchMiddlewares<RequestHandler>(CreateNewClubController.prototype.createNewClub)),
@@ -157,7 +275,7 @@ export function RegisterRoutes(app: Router) {
             async function CreateNewClubController_createNewClub(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"clubDemography":{"ref":"Body","required":true}}},
+                    body: {"in":"body","name":"body","required":true,"ref":"RequestCreateClub"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
