@@ -3,15 +3,22 @@ import { GameBalls } from './value_objects/GameBalls'
 import { GameId } from './value_objects/GameId'
 import { GameDate } from './value_objects/GameDate'
 import { GameRound } from './value_objects/GameRound'
+import { Maybe } from '@contexts/shared/domain/Maybe'
 
 export class Game extends AggregateRoot {
   private _id: GameId
-  private _balls: GameBalls
+  private _balls: Maybe<GameBalls>
   private createdAt: GameDate
   private _round: GameRound
   private _status: 'PENDING' | 'PLAYED'
 
-  constructor(id: GameId, balls: GameBalls, round: GameRound, createdAt: GameDate, status: 'PENDING' | 'PLAYED') {
+  constructor(
+    id: GameId,
+    balls: Maybe<GameBalls>,
+    round: GameRound,
+    createdAt: GameDate,
+    status: 'PENDING' | 'PLAYED'
+  ) {
     super()
     this._id = id
     this._balls = balls
@@ -20,10 +27,10 @@ export class Game extends AggregateRoot {
     this._status = status
   }
 
-  static create(id: string, balls: number[], createdAt: Date, round: string): Game {
+  static create(id: string, balls: Maybe<number[]>, createdAt: Date, round: string): Game {
     const game = new Game(
       new GameId(id),
-      new GameBalls(balls),
+      balls.map((balls) => new GameBalls(balls)),
       new GameRound(round),
       new GameDate(createdAt),
       'PENDING'
@@ -31,8 +38,18 @@ export class Game extends AggregateRoot {
     return game
   }
 
-  public updateBalls(numbers: number[]): void {
-    this._balls = new GameBalls(numbers)
+  toPrimitives() {
+    return {
+      id: this._id.value,
+      balls: this._balls.isDefined() ? this._balls.get().value : null,
+      createdAt: this.createdAt.value,
+      round: this._round.value,
+      status: this._status
+    }
+  }
+
+  public updateBalls(numbers: Maybe<number[]>): void {
+    this._balls = numbers.map((balls) => new GameBalls(balls))
     this._status = 'PLAYED'
   }
 
@@ -44,8 +61,8 @@ export class Game extends AggregateRoot {
     return this._status
   }
 
-  get balls(): number[] {
-    return this._balls.value
+  get balls(): Maybe<number[]> {
+    return this._balls.map((balls) => balls.value)
   }
 
   get round(): string {
