@@ -8,10 +8,14 @@ import { GameRepository } from '@contexts/games/domain/contracts/GameRepository'
 import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
 import { ZoneRepository } from '@contexts/zones/domain/contracts/ZoneRepository'
 import { DynamodbZoneRepository } from '@contexts/zones/infrastructure/DynamodbZoneRepository'
+import { DynamodbConnection } from '../DynamodbConnection'
 
 const builder = new ContainerBuilder()
 
-const controllers = glob.sync(`src/**/*Controller.ts`, {posix: true})
+builder.registerAndUse(DynamodbConnection)
+builder.register(GameRepository).use(DynamodbGameRepository)
+
+const controllers = glob.sync(`src/**/*Controller.ts`, { posix: true })
 
 controllers.map((controller) => {
   const match = controller.match(/\/([^/]+)\.ts$/)
@@ -21,9 +25,7 @@ controllers.map((controller) => {
   return builder.registerAndUse(object[className]).asSingleton()
 })
 
-builder.register(GameRepository).use(DynamodbGameRepository)
-
-const services = glob.sync(`src/contexts/**/*Service.ts`, {posix: true})
+const services = glob.sync(`src/contexts/**/*Service.ts`, { posix: true })
 
 services.map((service) => {
   const match = service.match(/\/([^/]+)\.ts$/)

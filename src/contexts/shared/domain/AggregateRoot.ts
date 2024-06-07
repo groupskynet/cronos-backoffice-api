@@ -5,14 +5,16 @@ export abstract class AggregateRoot extends Entity{
 
 	private domainEvents: DomainEvent[] = []
 
-	pullDomainEvents(): DomainEvent[] {
-		const domainEvents = this.domainEvents
-		this.domainEvents = []
+  abstract toPrimitives(): unknown
 
-		return domainEvents
-	}
+  pullDomainEvents(): DomainEvent[] {
+    const domainEvents = this.domainEvents
+    this.domainEvents = []
 
-	record(event: DomainEvent): void {
-		this.domainEvents.push(event)
-	}
+    return domainEvents
+  }
+
+  record(event: DomainEvent): void {
+    this.domainEvents.push(event)
+  }
 }

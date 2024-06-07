@@ -1,6 +1,7 @@
 import { Service } from 'diod'
 import { GameRepository } from '../domain/contracts/GameRepository'
 import { GameId } from '../domain/value_objects/GameId'
+import { Maybe } from '@contexts/shared/domain/Maybe'
 
 @Service()
 export class UpdatePendingGameToPlayService {
@@ -11,7 +12,7 @@ export class UpdatePendingGameToPlayService {
     if (!game) {
       throw new Error('game not found')
     }
-    game.updateBalls(balls)
+    game.updateBalls(Maybe.some(balls))
     await this.repository.save(game)
   }
 }

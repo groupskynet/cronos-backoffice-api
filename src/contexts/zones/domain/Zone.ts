@@ -10,6 +10,9 @@ import { AggregateRoot } from "@contexts/shared/domain/AggregateRoot"
 
 
 export class Zone extends AggregateRoot{
+    toPrimitives(): unknown {
+        throw new Error("Method not implemented.")
+    }
     private _currency: ZoneCurrency
     private _balance: number
     private _user: User
