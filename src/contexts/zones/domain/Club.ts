@@ -16,7 +16,7 @@ export class Club extends Entity{
         this._recorders = []
         this._balance = 0
     }
-    static cereate({demographyDto}:{demographyDto:DemographyDto}): Club{
+    static create({demographyDto}:{demographyDto:DemographyDto}): Club{
 
         const demography = new Demography(demographyDto)
 

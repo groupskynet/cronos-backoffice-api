@@ -61,7 +61,7 @@ export class Zone extends AggregateRoot{
         if(clubExist)
             throw new InvalidArgumentError(`The area already has a club with this name ${demographyDto.name}`)
 
-        const club = Club.cereate({demographyDto})
+        const club = Club.create({demographyDto})
 
         this._clubs.push(club)
     }

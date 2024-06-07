@@ -6,7 +6,7 @@ export class GetRecordersController{
 
     constructor(private readonly service: FindRecordersByClubService){}
 
-    @Get('/get-recorders')
+    @Get('/get_recorders')
     public async GetRecorders(
         @Query() idZone: string,
         @Query() idClub: string

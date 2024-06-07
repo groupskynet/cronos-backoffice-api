@@ -7,8 +7,8 @@ import { CreateNewGameOnBallsGenerated } from '@src/contexts/games/application/d
 import { GameRepository } from '@contexts/games/domain/contracts/GameRepository'
 import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
 import { ZoneRepository } from '@contexts/zones/domain/contracts/ZoneRepository'
-import { DynamodbZoneRepository } from '@contexts/zones/infrastructure/DynamodbZoneRepository'
 import { DynamodbConnection } from '../DynamodbConnection'
+import { DynamodbZoneRepository } from '@contexts/zones/infrastructure/DynamodbZoneRepository'
 
 const builder = new ContainerBuilder()
 

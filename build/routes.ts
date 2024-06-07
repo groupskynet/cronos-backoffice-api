@@ -171,7 +171,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/zone/get-clubs/:id',
+        app.get('/zone/get_clubs/:id',
             ...(fetchMiddlewares<RequestHandler>(GetClubsController)),
             ...(fetchMiddlewares<RequestHandler>(GetClubsController.prototype.getAll)),
 
@@ -206,7 +206,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/zone/update-balance/:id',
+        app.put('/zone/update_balance/:id',
             ...(fetchMiddlewares<RequestHandler>(EditBalanceController)),
             ...(fetchMiddlewares<RequestHandler>(EditBalanceController.prototype.editBalance)),
 
@@ -242,7 +242,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/club/get-recorders',
+        app.get('/club/get_recorders',
             ...(fetchMiddlewares<RequestHandler>(GetRecordersController)),
             ...(fetchMiddlewares<RequestHandler>(GetRecordersController.prototype.GetRecorders)),
 

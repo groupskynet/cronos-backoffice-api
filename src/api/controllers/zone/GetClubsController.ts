@@ -8,7 +8,7 @@ export class GetClubsController extends Controller {
     super()
   }
 
-  @Get('/get-clubs/{id}')
+  @Get('/get_clubs/{id}')
   public async getAll(
     @Path('id') id: string
   ) {
