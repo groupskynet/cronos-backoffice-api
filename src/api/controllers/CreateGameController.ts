@@ -2,13 +2,13 @@ import { Controller, Post, Route } from 'tsoa'
 
 @Route('game')
 export class CreateGameController extends Controller {
-	constructor() {
-		super()
-	}
+  constructor() {
+    super()
+  }
 
-	@Post('/create')
-	public async createGame() {
-		this.setStatus(200)
-		return
-	}
+  @Post('/create')
+  public async createGame() {
+    this.setStatus(200)
+    return
+  }
 }

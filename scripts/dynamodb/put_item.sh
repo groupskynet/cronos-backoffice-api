@@ -1,9 +1,16 @@
 aws dynamodb put-item \
 	--endpoint-url http://localhost:4566 \
 	--table-name cronos_keno \
+	--return-consumed-capacity TOTAL \
 	--item '{
-        "pk": {"S": "ticket#c23d5fe1-e172-48f0-99c8-59a80a2eddef"},
-        "sk": {"S": "ticket#c23d5fe1-e172-48f0-99c8-59a80a2eddef#bet#29309a48-5a52-4f17-8491-853c8b747cd9"},
-        "balls": {"L": [{"N": "20"}, {"N": "25"}]},
-        "money": {"N": "2000"}
+        "Pk": {"S": "GAME#ebac26f6-9577-4ff0-9e26-7dea402e2fff"},
+        "Sk": {"S": "#METADATA#"},
+        "Balls": {"L": [{"N": "20"}, {"N": "25"}]},
+        "Round": {"S": "ROUND#1"},
+        "GSI1Pk": {"S": "GAME#PENDING"},
+        "GSI1Sk": {"S": "GAME#ebac26f6-9577-4ff0-9e26-7dea402e2fff"},
+        "Status": {"S": "PENDING"},
+        "GameId": {"S": "ebac26f6-9577-4ff0-9e26-7dea402e2fff"},
+        "CreatedAt": {"S": "2023-01-01T00:00:00.000Z"},
+        "UpdatedAt": {"S": "2023-01-01T00:00:00.000Z"}
     }'
