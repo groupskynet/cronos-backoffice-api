@@ -93,7 +93,7 @@ export class Zone extends AggregateRoot{
             club.substractBalance(newBalance)
         }
         this._clubs = this._clubs.filter( x => x.id !== clubId)
-        
+        this._clubs.push(club)
         this.editBalance(newBalance,!isAdd)
     }
 }
