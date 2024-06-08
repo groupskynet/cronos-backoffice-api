@@ -11,7 +11,7 @@ export class CreateNewClubController extends Controller {
   }
 
   @Put('/create/{id}')
-  public async createNewClub(@Path('id') id: string, @Body() body: DemographyDto) {
-    await this.service.handle({ clubDemography: body, zoneId: id })
+  public async createNewClub(@Path('id') id: string, @Body() body: { id: string, demographyDto: DemographyDto }) {
+    await this.service.handle({ clubDto: body, zoneId: id })
   }
 }

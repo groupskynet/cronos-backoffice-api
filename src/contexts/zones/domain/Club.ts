@@ -16,11 +16,11 @@ export class Club extends Entity{
         this._recorders = []
         this._balance = 0
     }
-    static create({demographyDto}:{demographyDto:DemographyDto}): Club{
+    static create({id,demographyDto}:{id: string,demographyDto:DemographyDto}): Club{
 
         const demography = new Demography(demographyDto)
 
-        const club = new Club({id: demographyDto.id,demography})
+        const club = new Club({id,demography})
         
         return club
     }
