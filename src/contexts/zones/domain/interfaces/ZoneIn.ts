@@ -1,6 +1,6 @@
 import { Currency } from "@contexts/shared/domain/Money"
-import { DemographyDto } from "@contexts/shared/domain/interfaces/DemographyDto"
 import { UserDto } from "./UserDto"
+import { DemographyDto } from "@contexts/shared/domain/interfaces/DemographyDto"
 
 export interface ZoneIn{
     id: string;

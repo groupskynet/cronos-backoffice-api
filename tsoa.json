@@ -11,10 +11,35 @@
     "iocModule": "src/ioc"
   },
   "compilerOptions": {
+    "types": ["@types/node"],
+    "incremental": true,
+    "target": "es2022",
+    "module": "commonjs",
+    "outDir": "build",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "paths": {
-      "baseUrl": "./",
-      "src/@": "src/*",
-      "@contexts/*": "src/contexts/*"
+      "tsoa": ["node_modules/tsoa/dist"],
+      "tsoa/": ["node_modules/tsoa/dist/"],
+      "@contexts/*": ["src/contexts/*"],
+      "@controllers/*" : ["src/api/controllers/*"],
+      "@src/*": ["src/*"]
     }
   }
 }

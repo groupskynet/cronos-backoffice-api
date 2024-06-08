@@ -10,6 +10,7 @@ export class CreateNewZoneService{
 
     async handle(zoneIn: ZoneIn): Promise<void>{
 
+        // confirmar logica
         const zoneByName = await this.repository.getFindbyName(zoneIn.demographyDto.name)
 
         if(zoneByName)

@@ -2,11 +2,21 @@ import { Service } from "diod"
 import { Zone } from "../domain/Zone"
 import { ZoneRepository } from "../domain/contracts/ZoneRepository"
 import { DynamodbConnection } from "@contexts/shared/infrastructure/DynamodbConnection"
-import { QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { ZoneDynamodbItem } from "./dynamodb/ZoneDynamodbItem"
+import { UserAdminDynamodbItem } from "./dynamodb/UserAdimDynamodbItem"
+import { UserRecorderDynamodbItem } from "./dynamodb/UserRecorderDynamoDbItem"
+import { ClubDynamodbItem } from "./dynamodb/ClubDynamodbItem"
+import { TransactWriteItem, TransactWriteItemsCommand, TransactWriteItemsCommandInput } from "@aws-sdk/client-dynamodb"
+
+
+
+
 
 @Service()
 export class DynamodbZoneRepository implements ZoneRepository{
 
+    private readonly tableName = 'cronos_backoffice'
     constructor(private readonly connection: DynamodbConnection) {}
 
     
@@ -41,10 +51,73 @@ export class DynamodbZoneRepository implements ZoneRepository{
         )
     }
     
-    save(zone: Zone): Promise<void> {
-        console.log(zone)
-        throw new Error("Method not implemented.")
+    
+    async save(zone: Zone): Promise<void> {
+        const client = this.connection.client
+
+        if (!client) throw new Error('DynamodbClient not found')
+        
+        const zoneModel = new ZoneDynamodbItem(zone)
+        const adminModel = new UserAdminDynamodbItem(zone.user, zone.id)
+
+        const itemClubRecorder: TransactWriteItem[] = []
+
+        const itemClub: TransactWriteItem[] = []
+
+        zone.clubs.forEach((club) => {
+
+            club.recorders.forEach((recorder) => {
+                const recorderModel = new UserRecorderDynamodbItem(recorder, club.id)
+                itemClubRecorder.push({
+                    Put: {
+                        TableName: this.tableName,
+                        Item: recorderModel.toItem(),
+                        ConditionExpression: 'attribute_not_exists(PK)'
+                    }
+                })
+            })
+            
+            const clubModel = new ClubDynamodbItem(club, zone.id)
+
+            itemClub.push({
+                Put: {
+                    TableName: this.tableName,
+                    Item: clubModel.toItem(),
+                    ConditionExpression: 'attribute_not_exists(PK)'
+                }
+            })
+        })
+
+
+        const input: TransactWriteItemsCommandInput = {
+            TransactItems: [
+                {
+                    Put: {
+                        TableName: this.tableName,
+                        Item: zoneModel.toItem(),
+                        ConditionExpression: 'attribute_not_exists(PK)'
+                    }
+                },
+                {
+                    Put: {
+                        TableName: this.tableName,
+                        Item: adminModel.toItem(),
+                        ConditionExpression: 'attribute_not_exists(PK)'
+                    }
+                },
+                ...itemClub,
+                ...itemClubRecorder
+            ]
+        } 
+            
+        
+        const command = new TransactWriteItemsCommand(input)
+          
+        await client.send(command)
+
     }
+
+
     update(zone: Zone): Promise<void> {
         console.log(zone)
         throw new Error("Method not implemented.")

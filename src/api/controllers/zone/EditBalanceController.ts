@@ -16,7 +16,7 @@ export class EditBalanceController extends Controller {
 
   @Put('/update_balance/{id}')
   public async editBalance(@Path('id') id: string, @Body() body: RequestEditBalance) {
-    await this.service.handle({idZone: id, newBalance: body.newBalance, isAdd: body.isAdd, idClub: body.idClub}
+    await this.service.handle({idZone: id, ...body}
     )
   }
 }

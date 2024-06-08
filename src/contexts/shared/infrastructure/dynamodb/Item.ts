@@ -1,3 +1,5 @@
+import { AttributeValue } from "@aws-sdk/client-dynamodb"
+
 export abstract class Item {
   abstract get pk(): string
   abstract get sk(): string
@@ -9,5 +11,5 @@ export abstract class Item {
     }
   }
 
-  abstract toItem(): Record<string, unknown>
+  abstract toItem(): Record<string, AttributeValue> | undefined
 }

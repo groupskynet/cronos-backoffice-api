@@ -1,3 +1,4 @@
+import { AttributeValue } from "@aws-sdk/client-dynamodb"
 import { Item } from "@contexts/shared/infrastructure/dynamodb/Item"
 import { Zone } from "@contexts/zones/domain/Zone"
 
@@ -28,15 +29,17 @@ export class ZoneDynamodbItem extends Item{
       return `ZONE#${this.zone.id}`
     }
 
-    toItem(): Record<string, unknown> {
+    toItem(): Record<string, AttributeValue> {
         return {
             ...this.keys(),
             Id: {S: this.zone.id},
             Currency:{S: this.zone.currency},
-            Balance: {L: this.zone.balance},
-            User: {S: this.zone.user},
-            Clubs: {S: this.zone.clubs},
-            Demography: {S: this.zone.demography}
+            Balance: {S: this.zone.balance.toString()},
+            Demography: {M: this.zone.demography},
+            GSI1PK: { S: this.gsi1_pk },
+            GSI1SK: { S: this.gsi1_sk },
+            GSI2PK: { S: this.gsi2_pk },
+            GSI2SK: { S: this.gsi2_sk },
         }
     }
 

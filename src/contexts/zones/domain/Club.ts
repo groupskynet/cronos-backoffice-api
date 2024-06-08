@@ -33,6 +33,9 @@ export class Club extends Entity{
         return this._recorders
     }
 
+    get balance(): number{
+        return this._balance
+    }
     public addBalance(newBalance: number): void{
         this._balance += newBalance
     }
