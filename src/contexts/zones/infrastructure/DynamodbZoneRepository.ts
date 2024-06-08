@@ -4,8 +4,10 @@ import { ZoneRepository } from '../domain/contracts/ZoneRepository'
 import { DynamodbConnection } from '@contexts/shared/infrastructure/DynamodbConnection'
 import { QueryCommand } from '@aws-sdk/lib-dynamodb'
 import { ZoneDynamodbItem } from './dynamodb/ZoneDynamodbItem'
+import { TransactWriteItem, TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb'
 import { UserAdminDynamodbItem } from './dynamodb/UserAdimDynamodbItem'
-import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb'
+import { UserRecorderDynamodbItem } from './dynamodb/UserRecorderDynamoDbItem'
+import { ClubDynamodbItem } from './dynamodb/ClubDynamodbItem'
 
 @Service()
 export class DynamodbZoneRepository implements ZoneRepository {
@@ -49,11 +51,11 @@ export class DynamodbZoneRepository implements ZoneRepository {
 
     const adminModel = new UserAdminDynamodbItem(zone.user, zone.id)
 
-    //const itemClubRecorder: TransactWriteItem[] = []
+    const itemClubRecorder: TransactWriteItem[] = []
 
-    //const itemClub: TransactWriteItem[] = []
+    const itemClub: TransactWriteItem[] = []
 
-    /*zone.clubs.forEach((club) => {
+    zone.clubs.forEach((club) => {
       club.recorders.forEach((recorder) => {
         const recorderModel = new UserRecorderDynamodbItem(recorder, club.id)
         itemClubRecorder.push({
@@ -74,22 +76,24 @@ export class DynamodbZoneRepository implements ZoneRepository {
           ConditionExpression: 'attribute_not_exists(PK)'
         }
       })
-    })*/
+    })
 
     const command = new TransactWriteItemsCommand({
       TransactItems: [
         {
           Put: {
-            TableName: this.tableName,
+            TableName: 'cronos_backoffice',
             Item: zoneModel.toItem()
           }
         },
         {
           Put: {
-            TableName: this.tableName,
+            TableName: 'cronos_backoffice',
             Item: adminModel.toItem()
           }
-        }
+        },
+        ...itemClub,
+        ...itemClubRecorder
       ]
     })
 
