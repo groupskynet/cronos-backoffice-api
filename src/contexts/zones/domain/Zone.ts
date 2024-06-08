@@ -53,12 +53,12 @@ export class Zone extends AggregateRoot {
     return this._clubs
   }
 
-  public addClub({id,demographyDto}: {id: string,demographyDto:DemographyDto}): void {
+  public addClub({ id, demographyDto }: { id: string; demographyDto: DemographyDto }): void {
     const clubExist = this.clubs.find((x) => x.demography.name.value === demographyDto.name)
 
     if (clubExist) throw new InvalidArgumentError(`The area already has a club with this name ${demographyDto.name}`)
 
-    const club = Club.create({id, demographyDto })
+    const club = Club.create({ id, demographyDto })
 
     this._clubs.push(club)
   }

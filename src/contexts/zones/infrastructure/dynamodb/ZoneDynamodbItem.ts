@@ -34,8 +34,14 @@ export class ZoneDynamodbItem extends Item {
       ...this.keys(),
       Id: { S: this.zone.id },
       Currency: { S: this.zone.currency },
-      Balance: { S: this.zone.balance.toString() },
-      Demography: { M: this.zone.demography },
+      Balance: { N: this.zone.balance },
+      Demography: {
+        M: {
+          name: { S: this.zone.demography.name.value },
+          address: { S: this.zone.demography.address.value },
+          timeZone: { S: this.zone.demography.timeZone.value }
+        }
+      },
       GSI1PK: { S: this.gsi1_pk },
       GSI1SK: { S: this.gsi1_sk },
       GSI2PK: { S: this.gsi2_pk },
@@ -43,4 +49,3 @@ export class ZoneDynamodbItem extends Item {
     }
   }
 }
-
