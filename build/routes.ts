@@ -64,7 +64,6 @@ const models: TsoaRoute.Models = {
     "DemographyDto": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
             "address": {"dataType":"string","required":true},
             "timeZone": {"dataType":"string","required":true},
@@ -81,7 +80,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ZoneIn": {
+    "ZoneRequest": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
@@ -289,7 +288,7 @@ export function RegisterRoutes(app: Router) {
             async function CreateNewZoneController_createNewZone(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    body: {"in":"body","name":"body","required":true,"ref":"ZoneIn"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ZoneRequest"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

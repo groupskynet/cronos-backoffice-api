@@ -1,4 +1,4 @@
-import { AttributeValue } from "@aws-sdk/client-dynamodb"
+import { NativeAttributeValue } from '@aws-sdk/lib-dynamodb'
 
 export abstract class Item {
   abstract get pk(): string
@@ -6,10 +6,10 @@ export abstract class Item {
 
   public keys() {
     return {
-      PK: { S: this.pk },
-      SK: { S: this.sk }
+      PK: this.pk,
+      SK: this.sk
     }
   }
 
-  abstract toItem(): Record<string, AttributeValue> | undefined
+  abstract toItem(): Record<string, NativeAttributeValue>
 }

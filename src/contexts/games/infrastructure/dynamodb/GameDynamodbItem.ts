@@ -1,3 +1,4 @@
+import { NativeAttributeValue } from '@aws-sdk/lib-dynamodb'
 import { Game } from '@contexts/games/domain/Game'
 import { Item } from '@contexts/shared/infrastructure/dynamodb/Item'
 
@@ -22,7 +23,7 @@ export class GameDynamodbItem extends Item {
     return `GAME#${this.game.id}`
   }
 
-  toItem(): Record<string, unknown> {
+  toItem(): Record<string, NativeAttributeValue> {
     return {
       ...this.keys(),
       Balls: { L: this.game.balls.map((item) => ({ N: item.toString() })) },
