@@ -9,7 +9,6 @@ import { UserAdminDynamodbItem } from './dynamodb/UserAdimDynamodbItem'
 import { UserRecorderDynamodbItem } from './dynamodb/UserRecorderDynamoDbItem'
 import { ClubDynamodbItem } from './dynamodb/ClubDynamodbItem'
 import { Demography } from '@contexts/shared/domain/value_objects/Demography'
-import { Item } from '../../shared/infrastructure/dynamodb/Item'
 import { User } from '../domain/User'
 
 @Service()
