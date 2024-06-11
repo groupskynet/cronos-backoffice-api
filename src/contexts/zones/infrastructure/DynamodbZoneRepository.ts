@@ -42,7 +42,7 @@ export class DynamodbZoneRepository implements ZoneRepository {
     })
   }
 
-  async save(zone: Zone): Promise<void> {
+  async saveOrUpdate(zone: Zone): Promise<void> {
     const client = this.connection.client
 
     if (!client) throw new Error('DynamodbClient not found')
@@ -83,13 +83,15 @@ export class DynamodbZoneRepository implements ZoneRepository {
         {
           Put: {
             TableName: 'cronos_backoffice',
-            Item: zoneModel.toItem()
+            Item: zoneModel.toItem(),
+            ConditionExpression: 'attribute_not_exists(PK)'
           }
         },
         {
           Put: {
             TableName: 'cronos_backoffice',
-            Item: adminModel.toItem()
+            Item: adminModel.toItem(),
+            ConditionExpression: 'attribute_not_exists(PK)'
           }
         },
         ...itemClub,
@@ -102,10 +104,6 @@ export class DynamodbZoneRepository implements ZoneRepository {
     })
   }
 
-  update(zone: Zone): Promise<void> {
-    console.log(zone)
-    throw new Error('Method not implemented.')
-  }
   async getFindbyId(id: string): Promise<Zone | null> {
     const client = this.connection.client
 

@@ -15,6 +15,6 @@ export class CreateNewZoneService {
 
     const zone = Zone.create(zoneIn)
 
-    await this.repository.save(zone)
+    await this.repository.saveOrUpdate(zone)
   }
 }

@@ -19,7 +19,7 @@ export class CreateNewClubService{
 
         zone.addClub(clubDto)
 
-        await this.repository.update(zone)
+        await this.repository.saveOrUpdate(zone)
 
         this.event_bus.publish(zone.pullDomainEvents())
     }

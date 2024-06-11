@@ -21,6 +21,6 @@ export class EditBalanceService {
 
     zone.editBalance(newBalance, isAdd, idClub)
 
-    await this.repository.update(zone)
+    await this.repository.saveOrUpdate(zone)
   }
 }
