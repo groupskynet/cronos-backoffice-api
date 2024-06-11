@@ -8,6 +8,9 @@ import { TransactWriteItem, TransactWriteItemsCommand } from '@aws-sdk/client-dy
 import { UserAdminDynamodbItem } from './dynamodb/UserAdimDynamodbItem'
 import { UserRecorderDynamodbItem } from './dynamodb/UserRecorderDynamoDbItem'
 import { ClubDynamodbItem } from './dynamodb/ClubDynamodbItem'
+import { Demography } from '@contexts/shared/domain/value_objects/Demography'
+import { Item } from '../../shared/infrastructure/dynamodb/Item'
+import { User } from '../domain/User'
 
 @Service()
 export class DynamodbZoneRepository implements ZoneRepository {
@@ -109,27 +112,48 @@ export class DynamodbZoneRepository implements ZoneRepository {
 
     if (!client) throw new Error('DynamodbClient not found')
 
-    const command = new QueryCommand({
+    const commandZone = new QueryCommand({
       TableName: 'cronos_backoffice',
       IndexName: 'GSI1-Index',
-      KeyConditionExpression: 'GSI1PK = :gsi1pk AND GSI1sK = :gsi1sk',
+      KeyConditionExpression: 'PK = :pk',
       ExpressionAttributeValues: {
-        ':gsi1pk': `ZONE#`,
-        ':gsi1sk': `ZONE#${id}`
+        ':pk': `ZONE#${id}`
       }
     })
 
-    const response = await client.send(command)
+    const responseZone = await client.send(commandZone)
 
-    if (!response.Items) return null
+    if (!responseZone.Items) return null
 
-    const item = response.Items[0]
+    const itemZone = responseZone.Items[0]
+
+    const commandUser = new QueryCommand({
+      TableName: 'cronos_backoffice',
+      IndexName: 'GSI1-Index',
+      KeyConditionExpression: 'SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': `ZONE#${id}`
+      }
+    })
+
+
+    const responseUser = await client.send(commandUser)
+
+    if (!responseUser.Items) return null
+
+    const itemUser = responseUser.Items[0]
+
+    const user =  User.create({id: itemUser.Id, name: itemUser.Name})
 
     return new Zone({
-      id: item.id,
-      currency: item.currency,
-      demography: item.demography,
-      user: item.user
+      id: itemZone.Id,
+      currency: itemZone.Currency,
+      demography: new Demography({
+        name: itemZone.Demography.name,
+        address: itemZone.Demography.address,
+        timeZone: itemZone.Demography.timeZone
+      }),
+      user: user
     })
   }
 }
