@@ -34,7 +34,7 @@ export class ZoneDynamodbItem extends Item {
       ...this.keys(),
       Id: { S: this.zone.id },
       Currency: { S: this.zone.currency },
-      Balance: { N: this.zone.balance },
+      Balance: { S: this.zone.balance.toString() },
       Zone: { S: JSON.stringify(this.zone) },
       Demography: {
         M: {

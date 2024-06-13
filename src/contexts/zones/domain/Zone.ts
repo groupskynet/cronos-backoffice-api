@@ -34,7 +34,8 @@ export class Zone extends AggregateRoot {
     this._balance = 0
   }
 
-  static create({ id, demographyDto, userDto, currencyIn }: ZoneRequest): Zone {
+  static create({ id,   request }: {request: ZoneRequest, id: string}): Zone {
+    const {demographyDto, userDto, currencyIn} = request
     const demography = new Demography(demographyDto)
     const user = User.create(userDto)
     const currency = new ZoneCurrency(currencyIn)

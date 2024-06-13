@@ -46,7 +46,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Club": {
+    "Zone": {
         "dataType": "refObject",
         "properties": {
         },
@@ -90,7 +90,6 @@ const models: TsoaRoute.Models = {
     "ZoneRequest": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
             "currencyIn": {"ref":"Currency","required":true},
             "demographyDto": {"ref":"DemographyDto","required":true},
             "userDto": {"ref":"UserDto","required":true},

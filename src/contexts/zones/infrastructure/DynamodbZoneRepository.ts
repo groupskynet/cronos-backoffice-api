@@ -8,8 +8,6 @@ import { TransactWriteItem, TransactWriteItemsCommand } from '@aws-sdk/client-dy
 import { UserAdminDynamodbItem } from './dynamodb/UserAdimDynamodbItem'
 import { UserRecorderDynamodbItem } from './dynamodb/UserRecorderDynamoDbItem'
 import { ClubDynamodbItem } from './dynamodb/ClubDynamodbItem'
-import { Demography } from '@contexts/shared/domain/value_objects/Demography'
-import { User } from '../domain/User'
 
 @Service()
 export class DynamodbZoneRepository implements ZoneRepository {
@@ -114,42 +112,30 @@ export class DynamodbZoneRepository implements ZoneRepository {
     const commandZone = new GetCommand({
       TableName: 'cronos_backoffice',
       Key: {
-        PK: { S: `ZONE#${id}` }
+        PK: `ZONE#${id}`,
+        SK: `#METADATA#` 
       }
     })
 
+
+    // const command = new QueryCommand({
+    //   TableName: 'cronos_backoffice',
+    //   KeyConditionExpression: 'PK = :pk and SK = :sk',
+    //   ExpressionAttributeValues: {
+    //     ':pk': { S: `ZONE#${id}` },
+    //     ':sk': { S: `#METADATA#` }
+    //   }
+    // })
     const responseZone = await client.send(commandZone)
 
     if (!responseZone.Item) return null
 
     const itemZone = responseZone.Item.Zone
 
-    const commandUser = new QueryCommand({
-      TableName: 'cronos_backoffice',
-      KeyConditionExpression: 'PK= :pk and SK BEGINS_WITH :sk',
-      ExpressionAttributeValues: {
-        ':pk': `ZONE#${id}`,
-        ':sk': `USER#`
-      }
-    })
+    const zone = JSON.parse(itemZone)
 
-    const responseUser = await client.send(commandUser)
+    console.log({zone})
 
-    if (!responseUser.Items) return null
-
-    const itemUser = responseUser.Items[0]
-
-    const user = User.create({ id: itemUser.Id, name: itemUser.Name })
-
-    return new Zone({
-      id: itemZone.Id,
-      currency: itemZone.Currency,
-      demography: new Demography({
-        name: itemZone.Demography.name,
-        address: itemZone.Demography.address,
-        timeZone: itemZone.Demography.timeZone
-      }),
-      user: user
-    })
+    return zone
   }
 }

@@ -12,7 +12,7 @@ export class DynamodbConnection {
     if (!this._client) {
       const client = new DynamoDBClient({
         region: 'us-west-1',
-        endpoint: 'http://localhost:4566'
+        // endpoint: 'http://localhost:4566'
       })
       this._client = DynamoDBDocumentClient.from(client)
     }

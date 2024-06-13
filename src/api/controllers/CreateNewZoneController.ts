@@ -10,6 +10,6 @@ export class CreateNewZoneController extends Controller {
 
   @Put('/create/{id}')
   public async createNewZone(@Path('id') id: string, @Body() body: ZoneRequest) {
-    await this.service.handle({ ...body, id })
+    await this.service.handle(id, body)
   }
 }
