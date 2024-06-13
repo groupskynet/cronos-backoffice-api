@@ -11,11 +11,11 @@ export class UserAdminDynamodbItem extends Item {
   }
 
   get pk(): string {
-    return `USER#${this.user.id}`
+    return `ZONE#${this.zoneId}`
   }
 
   get sk(): string {
-    return `ZONE#${this.zoneId}`
+    return `USER#${this.user.id}`
   }
 
   toItem(): Record<string, NativeAttributeValue> {
@@ -26,4 +26,3 @@ export class UserAdminDynamodbItem extends Item {
     }
   }
 }
-

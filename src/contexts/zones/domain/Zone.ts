@@ -10,8 +10,15 @@ import { AggregateRoot } from '@contexts/shared/domain/AggregateRoot'
 
 export class Zone extends AggregateRoot {
   toPrimitives(): unknown {
-    throw new Error('Method not implemented.')
+    return {
+      id: this.id,
+      currency: this.currency,
+      demography: this.demography.toPrimitives(),
+      user: this.user.toPrimitives(),
+      clubs: this.clubs.map((club) => club.toPrimitives())
+    }
   }
+
   private _currency: ZoneCurrency
   private _balance: number
   private _user: User

@@ -11,11 +11,11 @@ export class UserRecorderDynamodbItem extends Item {
   }
 
   get pk(): string {
-    return `USER#${this.user.id}`
+    return `CLUB#${this.clubId}`
   }
 
   get sk(): string {
-    return `CLUB#${this.clubId}`
+    return `USER#${this.user.id}`
   }
 
   toItem(): Record<string, NativeAttributeValue> {
