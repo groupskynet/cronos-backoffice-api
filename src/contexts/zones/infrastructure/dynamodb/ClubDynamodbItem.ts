@@ -16,12 +16,28 @@ export class ClubDynamodbItem extends Item {
     return `CLUB#${this.club.id}`
   }
 
+  get gsi1_pk(): string {
+    return `CLUB#`
+  }
+
+  get gsi1_sk(): string {
+    return this.pk
+  }
+
   toItem(): Record<string, NativeAttributeValue> {
     return {
       ...this.keys(),
       Id: { S: this.club.id },
-      Balance: { L: this.club.balance },
-      Demography: { M: this.club.demography }
+      Balance: { S: this.club.balance.toString() },
+      Demography:  {
+        M: {
+          name: { S: this.club.demography.name.value },
+          address: { S: this.club.demography.address.value },
+          timeZone: { S: this.club.demography.timeZone.value }
+        }
+      },
+      GSI1PK: { S: this.gsi1_pk },
+      GSI1SK: { S: this.gsi1_sk },
     }
   }
 }

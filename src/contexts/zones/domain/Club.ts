@@ -1,11 +1,11 @@
 import { Demography } from '@src/contexts/shared/domain/value_objects/Demography'
-import { User } from './User'
 import { DemographyDto } from '@src/contexts/shared/domain/interfaces/DemographyDto'
 import { Entity } from '@contexts/shared/domain/Entity'
 import { InvalidArgumentError } from '@contexts/shared/domain/exceptions/InvalidArgumentError'
+import { Uuid } from '@contexts/shared/domain/value_objects/Uuid'
 
 export class Club extends Entity {
-  private _recorders: User[]
+  private _recorders: Uuid[]
   private _demography: Demography
   private _balance: number
   constructor({ id, demography }: { id: string; demography: Demography }) {
@@ -26,8 +26,8 @@ export class Club extends Entity {
     return this._demography
   }
 
-  get recorders(): User[] {
-    return this._recorders
+  get recorders(): string[] {
+    return this._recorders.map((recorder) => recorder.value)
   }
 
   get balance(): number {
@@ -45,7 +45,7 @@ export class Club extends Entity {
     return {
       id: this.id,
       demography: this._demography.toPrimitives(),
-      recorders: this._recorders.map((recorder) => recorder.toPrimitives()),
+      recorders: this._recorders,
       balance: this._balance
     }
   }

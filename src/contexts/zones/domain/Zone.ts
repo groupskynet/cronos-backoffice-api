@@ -1,46 +1,44 @@
 import { Demography } from '@src/contexts/shared/domain/value_objects/Demography'
 import { Club } from './Club'
-import { User } from './User'
 import { ZoneCurrency } from './value_objects/zone/ZoneCurrency'
-import { ZoneDto } from './interfaces/ZoneDto'
+import { ZoneDto } from './interfaces/zone/ZoneDto'
 import { DemographyDto } from '@contexts/shared/domain/interfaces/DemographyDto'
-import { ZoneRequest } from './interfaces/ZoneRequest'
 import { InvalidArgumentError } from '@contexts/shared/domain/exceptions/InvalidArgumentError'
 import { AggregateRoot } from '@contexts/shared/domain/AggregateRoot'
+import { Maybe } from '@contexts/shared/domain/Maybe'
+import { Uuid } from '@contexts/shared/domain/value_objects/Uuid'
+import { CreateZoneDto } from './interfaces/zone/CreateZoneDto'
 
 export class Zone extends AggregateRoot {
-  toPrimitives(): unknown {
-    return {
-      id: this.id,
-      currency: this.currency,
-      demography: this.demography.toPrimitives(),
-      user: this.user.toPrimitives(),
-      clubs: this.clubs.map((club) => club.toPrimitives())
-    }
-  }
-
   private _currency: ZoneCurrency
   private _balance: number
-  private _user: User
-  private _clubs: Club[]
+  private _userId: Uuid
+  private _clubs: Maybe<Club[]>
   private _demography: Demography
 
-  constructor({ id, currency, demography, user }: ZoneDto) {
+  constructor({ id, currency, demography, userId, clubs, balance }: ZoneDto) {
     super({ id })
     this._currency = currency
     this._demography = demography
-    this._user = user
-    this._clubs = []
-    this._balance = 0
+    this._clubs = clubs
+    this._balance = balance
+    this._userId = userId
   }
 
-  static create({ id,   request }: {request: ZoneRequest, id: string}): Zone {
-    const {demographyDto, userDto, currencyIn} = request
+  static create({ id, request }: { request: CreateZoneDto; id: string }): Zone {
+    const { demographyDto, userId, currencyIn, clubs } = request
     const demography = new Demography(demographyDto)
-    const user = User.create(userDto)
     const currency = new ZoneCurrency(currencyIn)
 
-    const zone = new Zone({ id, demography, user, currency })
+    const zone = new Zone(
+      { id,
+        demography,
+        userId: new Uuid(userId),
+        currency,
+        clubs: clubs,
+        balance: 0
+      }
+    )
 
     return zone
   }
@@ -51,24 +49,28 @@ export class Zone extends AggregateRoot {
   get currency(): string {
     return this._currency.value
   }
-  get user(): User {
-    return this._user
+  get userId(): string {
+    return this._userId.value
   }
   get balance(): number {
     return this._balance
   }
-  get clubs(): Club[] {
-    return this._clubs
+  get clubs(): Maybe<Club[]> {
+    return this._clubs.map((clubs) => clubs)
   }
 
   public addClub({ id, demographyDto }: { id: string; demographyDto: DemographyDto }): void {
-    const clubExist = this.clubs.find((x) => x.demography.name.value === demographyDto.name)
+    const clubExist = this.clubs.get().find((x) => x.demography.name.value === demographyDto.name)
 
     if (clubExist) throw new InvalidArgumentError(`The area already has a club with this name ${demographyDto.name}`)
 
     const club = Club.create({ id, demographyDto })
 
-    this._clubs.push(club)
+    const newClubs = this._clubs.get().filter((x) => x.id !== id)
+
+    newClubs.push(club)
+
+    this._clubs = Maybe.some(newClubs)
   }
 
   public editBalance(newBalance: number, isAdd: boolean, clubId: string = ''): void {
@@ -89,7 +91,7 @@ export class Zone extends AggregateRoot {
   }
 
   private editBalanceClub(newBalance: number, isAdd: boolean, clubId: string) {
-    const club = this._clubs.find((x) => x.id === clubId)
+    const club = this._clubs.get().find((x) => x.id === clubId)
 
     if (!club) throw new InvalidArgumentError(`Club ${clubId} was not found`)
 
@@ -98,8 +100,21 @@ export class Zone extends AggregateRoot {
     } else {
       club.substractBalance(newBalance)
     }
-    this._clubs = this._clubs.filter((x) => x.id !== clubId)
-    this._clubs.push(club)
+
+    const newClubs = this._clubs.get().filter((x) => x.id !== clubId)
+    newClubs.push(club)
+    this._clubs = Maybe.some(newClubs)
+
     this.editBalance(newBalance, !isAdd)
+  }
+
+  toPrimitives(): unknown {
+    return {
+      id: this.id,
+      currency: this.currency,
+      demography: this.demography.toPrimitives(),
+      userId: this.userId,
+      clubs: !this.clubs.isEmpty()? this.clubs.get().map((club) => club.toPrimitives()): Maybe.none()
+    }
   }
 }

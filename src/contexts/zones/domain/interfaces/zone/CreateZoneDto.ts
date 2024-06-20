@@ -1,9 +1,11 @@
+import { Maybe } from '@contexts/shared/domain/Maybe'
 import { Currency } from '@contexts/shared/domain/Money'
-import { UserDto } from './UserDto'
 import { DemographyDto } from '@contexts/shared/domain/interfaces/DemographyDto'
+import { Club } from '../../Club'
 
-export interface ZoneRequest {
+export interface CreateZoneDto {
   currencyIn: Currency
   demographyDto: DemographyDto
-  userDto: UserDto
+  userId: string;
+  clubs: Maybe<Club[]>
 }
