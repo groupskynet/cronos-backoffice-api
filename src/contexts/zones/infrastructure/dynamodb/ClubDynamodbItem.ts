@@ -21,7 +21,7 @@ export class ClubDynamodbItem extends Item {
   }
 
   get gsi1_sk(): string {
-    return this.pk
+    return this.sk
   }
 
   toItem(): Record<string, NativeAttributeValue> {

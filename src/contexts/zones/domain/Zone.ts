@@ -73,7 +73,7 @@ export class Zone extends AggregateRoot {
     this._clubs = Maybe.some(newClubs)
   }
 
-  public editBalance(newBalance: number, isAdd: boolean, clubId: string = ''): void {
+  public editBalance(newBalance: number, isAdd: boolean, clubId?: string ): void {
     if (newBalance <= 0) throw new InvalidArgumentError(`The new balance incorrect, must be positive`)
 
     if (isAdd && clubId && this._balance - newBalance < 0)
@@ -100,7 +100,6 @@ export class Zone extends AggregateRoot {
     } else {
       club.substractBalance(newBalance)
     }
-
     const newClubs = this._clubs.get().filter((x) => x.id !== clubId)
     newClubs.push(club)
     this._clubs = Maybe.some(newClubs)

@@ -1,5 +1,6 @@
 
-import { FindClubsByZoneService } from '@contexts/zones/application/FindClubsByZoneService'
+import { FindClubsByZoneResponse } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneResponse'
+import { FindClubsByZoneService } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneService'
 import {Controller, Get, Path, Route } from 'tsoa'
 
 @Route('zone')
@@ -11,7 +12,7 @@ export class GetClubsController extends Controller {
   @Get('/get_clubs/{id}')
   public async getAll(
     @Path('id') id: string
-  ) {
+  ): Promise<FindClubsByZoneResponse> {
     return await this.service.handle(id)
   }
 }

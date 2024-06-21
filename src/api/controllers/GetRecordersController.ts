@@ -1,4 +1,5 @@
-import { FindRecordersByClubService } from "@contexts/zones/application/FindRecordersByClubService"
+import { FindRecordersByClubResponse } from "@contexts/zones/application/findRecordersByClub/FindRecordersByClubResponse"
+import { FindRecordersByClubService } from "@contexts/zones/application/findRecordersByClub/FindRecordersByClubService"
 import { Get, Query, Route } from "tsoa"
 
 @Route('club')
@@ -8,9 +9,9 @@ export class GetRecordersController{
 
     @Get('/get_recorders')
     public async GetRecorders(
-        @Query() idZone: string,
-        @Query() idClub: string
-      ) {
-        return await this.service.handle({idZone,idClub})
+        @Query() zoneId: string,
+        @Query() clubId: string
+      ): Promise<FindRecordersByClubResponse> {
+        return await this.service.handle({zoneId,clubId})
       }
 }

@@ -16,6 +16,42 @@ import { ZoneCurrency } from '../domain/value_objects/zone/ZoneCurrency'
 export class DynamodbZoneRepository implements ZoneRepository {
   private readonly tableName = 'cronos_backoffice'
   constructor(private readonly connection: DynamodbConnection) {}
+  
+  async getFindbyName(name: string): Promise<Zone | null> {
+    const client = this.connection.client
+
+    if (!client) throw new Error('DynamodbClient not found')
+
+    const commandZone = new QueryCommand({
+      TableName: this.tableName,
+      IndexName: 'GSI2',
+      KeyConditionExpression: 'GSI2PK = :pk',
+      ExpressionAttributeValues: {
+        ':pk': `ZONE#${name}`,
+      }
+    })
+
+    const responseZone = await client.send(commandZone)
+
+    if (!responseZone.Items || responseZone.Items.length === 0) return null
+
+    const zoneItem = responseZone.Items[0]
+
+    const zone = new Zone({
+      id: zoneItem.Id,
+      currency: new ZoneCurrency(zoneItem.Currency),
+      balance: Number.parseFloat(zoneItem.Balance),
+      demography: new Demography({
+        name: zoneItem.Demography.name,
+        address: zoneItem.Demography.address,
+        timeZone: zoneItem.Demography.timeZone
+      }),
+      clubs: Maybe.none() ,
+      userId: new Uuid(zoneItem.UserId)
+    })
+
+    return zone
+  }
 
   async saveOrUpdate(zone: Zone): Promise<void> {
     const client = this.connection.client
@@ -34,7 +70,6 @@ export class DynamodbZoneRepository implements ZoneRepository {
           Put: {
             TableName: this.tableName,
             Item: clubModel.toItem(),
-            ConditionExpression: 'attribute_not_exists(PK)'
           }
         })
       })
@@ -45,8 +80,7 @@ export class DynamodbZoneRepository implements ZoneRepository {
         {
           Put: {
             TableName: this.tableName,
-            Item: zoneModel.toItem(),
-            ConditionExpression: 'attribute_not_exists(PK)'
+            Item: zoneModel.toItem()
           }
         },
         ...itemsClub
@@ -64,7 +98,7 @@ export class DynamodbZoneRepository implements ZoneRepository {
     if (!client) throw new Error('DynamodbClient not found')
 
     const commandZone = new GetCommand({
-      TableName: 'cronos_backoffice',
+      TableName: this.tableName,
       Key: {
         PK: `ZONE#${id}`,
         SK: `#METADATA#`
@@ -76,20 +110,19 @@ export class DynamodbZoneRepository implements ZoneRepository {
     if (!responseZone.Item) return null
 
     const queryClubs = new QueryCommand({
-      TableName: 'cronos_backoffice',
-      IndexName: 'GSI1',
-      KeyConditionExpression: 'PK = :gsi1pk and SK = :gsi1sk',
+      TableName: this.tableName,
+      KeyConditionExpression: 'PK = :pk and begins_with(SK, :sk)',
       ExpressionAttributeValues: {
-        ':gsi1sk': `ZONE#${id}`,
-        ':gsi1pk': `CLUB#`
+        ':pk': `ZONE#${id}`,
+        ':sk': `CLUB#`
       }
     })
 
     const responseClubs = await client.send(queryClubs)
 
-    let clubs: Club[] = []
+     let clubs: Club[] = []
 
-    if (responseClubs.Items) {
+    if (responseClubs.Items && responseClubs.Items.length > 0) {
       clubs = responseClubs.Items.map(
         (item) =>
           new Club({
@@ -98,7 +131,10 @@ export class DynamodbZoneRepository implements ZoneRepository {
             name: item.Demography.name,
             address: item.Demography.address,
             timeZone: item.Demography.timeZone
-            })
+            }
+          ),
+          balance: Number.parseFloat(item.Balance),
+          recorders: item.Recorders ? item.Recorders.map((x: string) => new Uuid(x)) : Maybe.none()
           })
       )
     }

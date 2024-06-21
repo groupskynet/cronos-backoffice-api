@@ -1,5 +1,5 @@
-import { CreateNewClubRequest } from '@contexts/zones/application/CreatenewClub/CreateNewClubRequest'
-import { CreateNewClubService } from '@contexts/zones/application/CreatenewClub/CreateNewClubService'
+import { CreateNewClubRequest } from '@contexts/zones/application/createNewClub/CreateNewClubRequest'
+import { CreateNewClubService } from '@contexts/zones/application/createNewClub/CreateNewClubService'
 import { Body, Controller, Path, Put, Route } from 'tsoa'
 
 
@@ -10,8 +10,8 @@ export class CreateNewClubController extends Controller {
     super()
   }
 
-  @Put('/create/{id}')
-  public async createNewClub(@Path('id') id: string, @Body() body: CreateNewClubRequest) {
-    await this.service.handle({ clubDto: body, zoneId: id })
+  @Put('/create/{zoneId}')
+  public async createNewClub(@Path('zoneId') zoneId: string, @Body() body: CreateNewClubRequest) {
+    await this.service.handle({ clubDto: body, zoneId })
   }
 }

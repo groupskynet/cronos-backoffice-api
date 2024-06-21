@@ -9,6 +9,8 @@ import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbG
 import { ZoneRepository } from '@contexts/zones/domain/contracts/ZoneRepository'
 import { DynamodbConnection } from '../DynamodbConnection'
 import { DynamodbZoneRepository } from '@contexts/zones/infrastructure/DynamodbZoneRepository'
+import { UserRepository } from '@contexts/zones/domain/contracts/UserRepository'
+import { DynamodbUserRepository } from '@contexts/zones/infrastructure/DynamodbUserRepository'
 
 const builder = new ContainerBuilder()
 
@@ -38,5 +40,8 @@ services.map((service) => {
 builder.registerAndUse(CreateNewGameOnBallsGenerated).addTag('subscriber')
 
 builder.register(EventBus).use(AwsEventBridgeEventBus)
+
 builder.register(ZoneRepository).use(DynamodbZoneRepository)
+builder.register(UserRepository).use(DynamodbUserRepository)
+
 export const container = builder.build()

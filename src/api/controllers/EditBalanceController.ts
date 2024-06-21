@@ -1,11 +1,11 @@
-import { EditBalanceService } from '@contexts/zones/application/EditBalanceService'
+import { EditBalanceService } from '@contexts/zones/application/editBalance/EditBalanceService'
 import { Body, Controller, Path, Put, Route } from 'tsoa'
 
 interface RequestEditBalance {
   
   newBalance: number
   isAdd: boolean
-  idClub: string
+  clubId: string
 }
 
 @Route('zone')
@@ -14,9 +14,9 @@ export class EditBalanceController extends Controller {
     super()
   }
 
-  @Put('/update_balance/{id}')
-  public async editBalance(@Path('id') id: string, @Body() body: RequestEditBalance) {
-    await this.service.handle({idZone: id, ...body}
+  @Put('/update_balance/{zoneId}')
+  public async editBalance(@Path('zoneId') zoneId: string, @Body() body: RequestEditBalance) {
+    await this.service.handle({zoneId, ...body}
     )
   }
 }

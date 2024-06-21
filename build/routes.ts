@@ -27,6 +27,25 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "recorderClubResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FindRecordersByClubResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "zoneId": {"dataType":"string","required":true},
+            "clubId": {"dataType":"string","required":true},
+            "recorders": {"dataType":"array","array":{"dataType":"refObject","ref":"recorderClubResponse"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Game": {
         "dataType": "refObject",
         "properties": {
@@ -39,9 +58,23 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Zone": {
+    "FindClubsResponse": {
         "dataType": "refObject",
         "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "address": {"dataType":"string","required":true},
+            "balance": {"dataType":"double","required":true},
+            "zoneTime": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FindClubsByZoneResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "zoneId": {"dataType":"string","required":true},
+            "clubs": {"dataType":"array","array":{"dataType":"refObject","ref":"FindClubsResponse"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -51,7 +84,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "newBalance": {"dataType":"double","required":true},
             "isAdd": {"dataType":"boolean","required":true},
-            "idClub": {"dataType":"string","required":true},
+            "clubId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -140,8 +173,8 @@ export function RegisterRoutes(app: Router) {
 
             async function GetRecordersController_GetRecorders(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    idZone: {"in":"query","name":"idZone","required":true,"dataType":"string"},
-                    idClub: {"in":"query","name":"idClub","required":true,"dataType":"string"},
+                    zoneId: {"in":"query","name":"zoneId","required":true,"dataType":"string"},
+                    clubId: {"in":"query","name":"clubId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -239,13 +272,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/zone/update_balance/:id',
+        app.put('/zone/update_balance/:zoneId',
             ...(fetchMiddlewares<RequestHandler>(EditBalanceController)),
             ...(fetchMiddlewares<RequestHandler>(EditBalanceController.prototype.editBalance)),
 
             async function EditBalanceController_editBalance(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    zoneId: {"in":"path","name":"zoneId","required":true,"dataType":"string"},
                     body: {"in":"body","name":"body","required":true,"ref":"RequestEditBalance"},
             };
 
@@ -311,13 +344,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/club/create/:id',
+        app.put('/club/create/:zoneId',
             ...(fetchMiddlewares<RequestHandler>(CreateNewClubController)),
             ...(fetchMiddlewares<RequestHandler>(CreateNewClubController.prototype.createNewClub)),
 
             async function CreateNewClubController_createNewClub(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    zoneId: {"in":"path","name":"zoneId","required":true,"dataType":"string"},
                     body: {"in":"body","name":"body","required":true,"ref":"CreateNewClubRequest"},
             };
 

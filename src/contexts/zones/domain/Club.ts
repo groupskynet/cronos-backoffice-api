@@ -3,21 +3,23 @@ import { DemographyDto } from '@src/contexts/shared/domain/interfaces/Demography
 import { Entity } from '@contexts/shared/domain/Entity'
 import { InvalidArgumentError } from '@contexts/shared/domain/exceptions/InvalidArgumentError'
 import { Uuid } from '@contexts/shared/domain/value_objects/Uuid'
+import { Maybe } from '@contexts/shared/domain/Maybe'
+import { CLubDto } from './interfaces/club/CLubDto'
 
 export class Club extends Entity {
-  private _recorders: Uuid[]
+  private _recorders: Maybe<Uuid[]>
   private _demography: Demography
   private _balance: number
-  constructor({ id, demography }: { id: string; demography: Demography }) {
+  constructor({ id, demography, balance, recorders }: CLubDto) {
     super({ id })
     this._demography = demography
-    this._recorders = []
-    this._balance = 0
+    this._recorders = recorders
+    this._balance = balance
   }
   static create({ id, demographyDto }: { id: string; demographyDto: DemographyDto }): Club {
     const demography = new Demography(demographyDto)
 
-    const club = new Club({ id, demography })
+    const club = new Club({ id, demography, balance: 0, recorders: Maybe.none() })
 
     return club
   }
@@ -26,8 +28,8 @@ export class Club extends Entity {
     return this._demography
   }
 
-  get recorders(): string[] {
-    return this._recorders.map((recorder) => recorder.value)
+  get recorders(): Maybe<Uuid[]> {
+    return this._recorders.map((recorders) => recorders)
   }
 
   get balance(): number {
