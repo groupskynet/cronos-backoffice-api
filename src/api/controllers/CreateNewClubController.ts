@@ -1,5 +1,5 @@
-import { CreateNewClubRequest } from '@contexts/zones/application/createNewClub/CreateNewClubRequest'
-import { CreateNewClubService } from '@contexts/zones/application/createNewClub/CreateNewClubService'
+import { CreateNewClubRequest } from '@contexts/zones/application/CreatenewClub/CreateNewClubRequest'
+import { CreateNewClubService } from '@contexts/zones/application/CreatenewClub/CreateNewClubService'
 import { Body, Controller, Path, Put, Route } from 'tsoa'
 
 

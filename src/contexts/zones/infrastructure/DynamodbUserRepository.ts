@@ -4,7 +4,9 @@ import { UserRepository } from '../domain/contracts/UserRepository'
 import { UserDynamodbItem } from './dynamodb/UserDynamodbItem'
 import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb'
 import { GetCommand } from '@aws-sdk/lib-dynamodb'
+import { Service } from 'diod'
 
+@Service()
 export class DynamodbUserRepository implements UserRepository {
   private readonly tableName = 'cronos_backoffice'
   constructor(private readonly connection: DynamodbConnection) {}
