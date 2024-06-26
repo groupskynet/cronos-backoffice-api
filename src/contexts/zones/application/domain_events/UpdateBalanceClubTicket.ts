@@ -4,6 +4,7 @@ import { BalanceClubTicketDomainEvent } from "@contexts/zones/domain/domain_even
 
 export class UpdateBalanceClubTicket implements DomainEventSubscriber<BalanceClubTicketDomainEvent> {
     on(domainEvent: BalanceClubTicketDomainEvent): Promise<void> {
+        console.log({domainEvent})
         throw new Error("Method not implemented.")
     }
     subscribedTo(): DomainEventClass<BalanceClubTicketDomainEvent>[] {
