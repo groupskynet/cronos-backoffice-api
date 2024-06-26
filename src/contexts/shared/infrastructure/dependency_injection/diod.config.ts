@@ -9,8 +9,8 @@ import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbG
 import { ZoneRepository } from '@contexts/zones/domain/contracts/ZoneRepository'
 import { DynamodbConnection } from '../DynamodbConnection'
 import { DynamodbZoneRepository } from '@contexts/zones/infrastructure/DynamodbZoneRepository'
-import { UserRepository } from '@contexts/zones/domain/contracts/UserRepository'
-import { DynamodbUserRepository } from '@contexts/zones/infrastructure/DynamodbUserRepository'
+import { UserRepository } from '@contexts/users/domain/contracts/UserRepository'
+import { DynamodbUserRepository } from '@contexts/users/infrastructure/DynamodbUserRepository'
 
 const builder = new ContainerBuilder()
 

@@ -1,6 +1,6 @@
 import { NativeAttributeValue } from "@aws-sdk/lib-dynamodb"
 import { Item } from "@contexts/shared/infrastructure/dynamodb/Item"
-import { User } from "@contexts/zones/domain/User"
+import { User } from "@contexts/users/domain/User"
 
 export class UserDynamodbItem extends Item {
     constructor(private readonly user: User) {
@@ -17,7 +17,7 @@ export class UserDynamodbItem extends Item {
             ...this.keys(),
             Id: { S: this.user.id },
             Name: { S: this.user.name },
-            Password: { S: this.user.password }
+            Enabled: { BOOL: this.user.enabled }
         }
     }
     

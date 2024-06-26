@@ -1,4 +1,4 @@
-import { UserRepository } from '@contexts/zones/domain/contracts/UserRepository'
+import { UserRepository } from '@contexts/users/domain/contracts/UserRepository'
 import { ZoneRepository } from '@contexts/zones/domain/contracts/ZoneRepository'
 import { Service } from 'diod'
 import { FindRecordersByClubResponse } from './FindRecordersByClubResponse'
