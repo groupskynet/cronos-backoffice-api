@@ -1,11 +1,13 @@
 import { FindRecordersByClubResponse } from "@contexts/zones/application/findRecordersByClub/FindRecordersByClubResponse"
 import { FindRecordersByClubService } from "@contexts/zones/application/findRecordersByClub/FindRecordersByClubService"
-import { Get, Query, Route } from "tsoa"
+import { Controller, Get, Query, Route } from "tsoa"
 
-@Route('club')
-export class GetRecordersController{
+@Route('clubs')
+export class GetRecordersController extends Controller {
 
-    constructor(private readonly service: FindRecordersByClubService){}
+    constructor(private readonly service: FindRecordersByClubService){
+        super()
+    }
 
     @Get('/get_recorders')
     public async GetRecorders(

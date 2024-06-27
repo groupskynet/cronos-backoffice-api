@@ -4,7 +4,7 @@ import { Body, Controller, Path, Put, Route } from 'tsoa'
 
 
 
-@Route('club')
+@Route('clubs')
 export class CreateNewClubController extends Controller {
   constructor(private readonly service: CreateNewClubService) {
     super()

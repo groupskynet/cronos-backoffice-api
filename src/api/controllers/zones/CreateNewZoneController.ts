@@ -2,7 +2,7 @@ import { CreateNewZoneRequest } from '@contexts/zones/application/createNewZone/
 import { CreateNewZoneService } from '@contexts/zones/application/createNewZone/CreateNewZoneService'
 import { Body, Controller, Path, Put, Route } from 'tsoa'
 
-@Route('zone')
+@Route('zones')
 export class CreateNewZoneController extends Controller {
   constructor(private readonly service: CreateNewZoneService) {
     super()

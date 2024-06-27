@@ -4,7 +4,7 @@ export class Bootstrap {
 	server: Server
 
 	constructor() {
-		const port = process.env.port ?? '3000'
+		const port = process.env.port ?? '3005'
 		this.server = new Server(port)
 	}
 

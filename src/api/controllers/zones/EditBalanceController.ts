@@ -8,7 +8,7 @@ interface RequestEditBalance {
   clubId: string
 }
 
-@Route('zone')
+@Route('zones')
 export class EditBalanceController extends Controller {
   constructor(private readonly service: EditBalanceService) {
     super()

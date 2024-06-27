@@ -41,6 +41,6 @@
       "@src/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "src/contexts/users/application/createNewUser"],
   "exclude": ["node_modules"]
 }

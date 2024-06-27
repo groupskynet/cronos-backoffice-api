@@ -2,7 +2,7 @@ import { AggregateRoot } from '@contexts/shared/domain/AggregateRoot'
 import { UserName } from './value_objects/user/UserName'
 import { UserPassword } from './value_objects/user/UserPassword'
 import { UserDto } from './interfaces/user/UserDto'
-import { UserCreateDto } from './interfaces/user/UserCreateDto'
+import { UserCreateOrUpdateDto } from './interfaces/user/UserCreateOrUpdateDto'
 
 export class User extends AggregateRoot {
   private _name: UserName
@@ -16,7 +16,7 @@ export class User extends AggregateRoot {
     this._enabled = enabled
   }
 
-  static create({ id, name,password, enabled }: UserCreateDto): User {
+  static createOrUpdate({ id, name,password, enabled }: UserCreateOrUpdateDto): User {
     const user = new User({ id, name: new UserName(name), password: new UserPassword(password),enabled })
     return user
   }

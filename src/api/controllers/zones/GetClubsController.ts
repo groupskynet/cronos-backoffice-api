@@ -3,7 +3,7 @@ import { FindClubsByZoneResponse } from '@contexts/zones/application/findClubsBy
 import { FindClubsByZoneService } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneService'
 import {Controller, Get, Path, Route } from 'tsoa'
 
-@Route('zone')
+@Route('zones')
 export class GetClubsController extends Controller {
   constructor(private readonly service: FindClubsByZoneService) {
     super()
