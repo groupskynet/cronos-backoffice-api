@@ -13,6 +13,7 @@ export class CreateNewClubController extends Controller {
 
   @Put('/create/{zoneId}')
   public async createNewClub(@Path('zoneId') zoneId: string, @Body() body: CreateNewClubRequest) {
+    
     await this.service.handle({ clubDto: body, zoneId })
   }
 }
