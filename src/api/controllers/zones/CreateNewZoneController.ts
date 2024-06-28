@@ -1,5 +1,5 @@
-import { CreateNewZoneRequest } from '@contexts/zones/application/createNewZone/CreateNewZoneRequest'
-import { CreateNewZoneService } from '@contexts/zones/application/createNewZone/CreateNewZoneService'
+import { CreateNewZoneRequest } from '@contexts/zones/application/CreateNewZone/CreateNewZoneRequest'
+import { CreateNewZoneService } from '@contexts/zones/application/CreateNewZone/CreateNewZoneService'
 import { Body, Controller, Path, Put, Route } from 'tsoa'
 
 @Route('zones')
