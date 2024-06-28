@@ -8,7 +8,7 @@ export class UpdateUserService {
     constructor(private readonly userRepository: UserRepository){}
 
     async handle(id: string,{ name, password, enabled}: UpdateUserRequest): Promise<void> {
-        const user = await this.userRepository.getFindbyId(id)
+        const user = await this.userRepository.findbyId(id)
 
         if(!user) throw new Error(`User with id ${id} not found`)
 

@@ -12,12 +12,21 @@ export class UserDynamodbItem extends Item {
     get sk(): string {
         return `#METADATA#`
     }
+    get gsi1_pk(): string {
+        return `USER#${this.user.name}`
+      }
+    
+      get gsi1_sk(): string {
+        return this.pk
+      }
     toItem(): Record<string, NativeAttributeValue> {
         return {
             ...this.keys(),
             Id: { S: this.user.id },
             Name: { S: this.user.name },
-            Enabled: { BOOL: this.user.enabled }
+            Enabled: { BOOL: this.user.enabled },
+            GSI1PK: {S: this.gsi1_pk},
+            GSI1SK: {S: this.gsi1_sk},
         }
     }
     

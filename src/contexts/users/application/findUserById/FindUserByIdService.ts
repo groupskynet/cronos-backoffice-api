@@ -8,7 +8,7 @@ export class FindUserByIdService {
 
     async handle(id: string): Promise<FindUserByIdResponse> {
         
-        const user = await this.userRepository.getFindbyId(id)
+        const user = await this.userRepository.findbyId(id)
         
         if(!user) throw new Error(`User with id ${id} not found`)
         

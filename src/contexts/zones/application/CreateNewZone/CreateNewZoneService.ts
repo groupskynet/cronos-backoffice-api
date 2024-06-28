@@ -14,6 +14,10 @@ export class CreateNewZoneService {
 
     if (zoneByName) throw new Error(`Zone with with the name of ${request.demographyDto.name} already exists`)
 
+    const zoneById = await this.repository.getFindbyId(id)
+
+    if (zoneById) throw new Error(`Zone with with the id of ${id} already exists`)
+
     const zone = Zone.create({id, request: {...request, clubs: Maybe.none()}})
 
     await this.repository.saveOrUpdate(zone)

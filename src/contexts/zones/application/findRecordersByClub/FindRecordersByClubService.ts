@@ -25,7 +25,7 @@ export class FindRecordersByClubService {
 
     if (!club.recorders.isEmpty()) {
       club.recorders.get().forEach(async (recorder) => {
-        const user = await this.userRepository.getFindbyId(recorder.value)
+        const user = await this.userRepository.findbyId(recorder.value)
         if (user !== null)
           recordersResponse.recorders.push({
             id: user.id,

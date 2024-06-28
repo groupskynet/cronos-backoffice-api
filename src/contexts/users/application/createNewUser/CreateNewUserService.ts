@@ -10,9 +10,14 @@ export class CreateNewUserService {
 
     async handle({id, name, password, enabled}: UserCreateOrUpdateDto): Promise<void> {
 
-        const userExits = await this.repository.getFindbyName(name)
+        const userExits = await this.repository.findbyName(name)
 
-        if (userExits != null) throw new Error(`User with name ${name} already exists`)
+
+        if (userExits) throw new Error(`User with name ${name} already exists`)
+
+        const userExitsId = await this.repository.findbyId(id)
+
+        if (userExitsId) throw new Error(`User with id ${id} already exists`)
 
         const user = User.createOrUpdate({ id, name, password, enabled })
 

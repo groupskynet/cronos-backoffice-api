@@ -1,6 +1,6 @@
 import { DynamodbConnection } from '@contexts/shared/infrastructure/DynamodbConnection'
 import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb'
-import { GetCommand } from '@aws-sdk/lib-dynamodb'
+import { GetCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
 import { Service } from 'diod'
 import { UserRepository } from '../domain/contracts/UserRepository'
 import { User } from '../domain/User'
@@ -14,28 +14,31 @@ export class DynamodbUserRepository implements UserRepository {
   private readonly tableName = 'cronos_backoffice'
   constructor(private readonly connection: DynamodbConnection) {
   }
-  async getFindbyName(name: string): Promise<User | null> {
+  async findbyName(name: string): Promise<User | null> {
     const client = this.connection.client
 
     if (!client) throw new Error('DynamodbClient not found')
 
-    const command = new GetCommand({
+    const command = new QueryCommand({
       TableName: this.tableName,
-      Key: {
-        PK: `USER#${name}`,
-        SK: `#METADATA#`
+      IndexName: 'GSI1',
+      KeyConditionExpression: 'GSI1PK = :pk',
+      ExpressionAttributeValues: {
+        ':pk': `USER#${name}`,
       }
     })
 
     const response = await client.send(command)
-
-    if (!response.Item) return null
+    console.log(response.Items)
+    if (!response.Items || response.Items.length === 0) return null
+    
+    const userItem = response.Items[0]
 
     const user = new User({
-      id: response.Item.Id,
-      name: new UserName(response.Item.Name),
-      password: new UserPassword(EncryptAES256.decrypt(response.Item.Password)),
-      enabled: response.Item.Enabled
+      id: userItem.Id,
+      name: new UserName(userItem.Name),
+      password: new UserPassword(EncryptAES256.decrypt(userItem.Password)),
+      enabled: userItem.Enabled
     })
 
     return user
@@ -65,7 +68,7 @@ export class DynamodbUserRepository implements UserRepository {
       console.log(error)
     })
   }
-  async getFindbyId(id: string): Promise<User | null> {
+  async findbyId(id: string): Promise<User | null> {
     const client = this.connection.client
 
     if (!client) throw new Error('DynamodbClient not found')
