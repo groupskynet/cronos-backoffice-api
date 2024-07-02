@@ -11,6 +11,8 @@ import { DynamodbConnection } from '../DynamodbConnection'
 import { DynamodbZoneRepository } from '@contexts/zones/infrastructure/DynamodbZoneRepository'
 import { UserRepository } from '@contexts/users/domain/contracts/UserRepository'
 import { DynamodbUserRepository } from '@contexts/users/infrastructure/DynamodbUserRepository'
+import { Authentication } from '@contexts/users/domain/contracts/Authentication'
+import { AuthenticationJwt } from '@contexts/users/infrastructure/Jwt/AuthenticationJwt'
 
 const builder = new ContainerBuilder()
 
@@ -43,5 +45,7 @@ builder.register(EventBus).use(AwsEventBridgeEventBus)
 
 builder.register(ZoneRepository).use(DynamodbZoneRepository)
 builder.register(UserRepository).use(DynamodbUserRepository)
+
+builder.register(Authentication).use(AuthenticationJwt)
 
 export const container = builder.build()
