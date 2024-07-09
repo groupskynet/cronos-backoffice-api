@@ -1,9 +1,10 @@
 
 import { FindClubsByZoneResponse } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneResponse'
 import { FindClubsByZoneService } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneService'
-import {Controller, Get, Path, Route } from 'tsoa'
+import {Controller, Get, Path, Route, Tags } from 'tsoa'
 
 @Route('zones')
+@Tags('Zone')
 export class GetClubsController extends Controller {
   constructor(private readonly service: FindClubsByZoneService) {
     super()

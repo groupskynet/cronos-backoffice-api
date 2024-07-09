@@ -1,5 +1,5 @@
 import { EditBalanceService } from '@contexts/zones/application/editBalance/EditBalanceService'
-import { Body, Controller, Path, Put, Route } from 'tsoa'
+import { Body, Controller, Path, Put, Route, Tags } from 'tsoa'
 
 interface RequestEditBalance {
   
@@ -9,6 +9,7 @@ interface RequestEditBalance {
 }
 
 @Route('zones')
+@Tags('Zone')
 export class EditBalanceController extends Controller {
   constructor(private readonly service: EditBalanceService) {
     super()

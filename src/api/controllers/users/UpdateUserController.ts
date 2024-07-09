@@ -1,8 +1,9 @@
 import { UpdateUserService } from "@contexts/users/application/updateUser/UpdateUserService"
 import { UpdateUserRequest } from "@contexts/users/application/updateUser/UpdateuserRequest"
-import { Body, Controller, Path, Put, Route } from "tsoa"
+import { Body, Controller, Path, Put, Route, Tags } from "tsoa"
 
 @Route('users')
+@Tags('User')
 export class UpdateUserController extends Controller {
 
     constructor(private readonly service: UpdateUserService){
