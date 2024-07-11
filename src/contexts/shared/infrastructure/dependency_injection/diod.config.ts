@@ -3,7 +3,6 @@ import { glob } from 'glob'
 
 import { EventBus } from '../../domain/event/EventBus'
 import { AwsEventBridgeEventBus } from '../event_bus/AwsEventBridgeEventBus'
-import { CreateNewGameOnBallsGenerated } from '@src/contexts/games/application/domain_events/CreateNewGameOnBallsGenerate'
 import { GameRepository } from '@contexts/games/domain/contracts/GameRepository'
 import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
 import { ZoneRepository } from '@contexts/zones/domain/contracts/ZoneRepository'
@@ -13,6 +12,7 @@ import { UserRepository } from '@contexts/users/domain/contracts/UserRepository'
 import { DynamodbUserRepository } from '@contexts/users/infrastructure/DynamodbUserRepository'
 import { Authentication } from '@contexts/users/domain/contracts/Authentication'
 import { AuthenticationJwt } from '@contexts/users/infrastructure/Jwt/AuthenticationJwt'
+import { UpdateBalanceOnTicketsCreate } from '@contexts/tickets/application/events/UpdateBalanceOnTicketsCreate'
 
 const builder = new ContainerBuilder()
 
@@ -39,7 +39,8 @@ services.map((service) => {
   return builder.registerAndUse(object[className]).asSingleton()
 })
 
-builder.registerAndUse(CreateNewGameOnBallsGenerated).addTag('subscriber')
+//builder.registerAndUse(CreateNewGameOnBallsGenerated).addTag('subscriber')
+builder.registerAndUse(UpdateBalanceOnTicketsCreate).addTag('subscriber')
 
 builder.register(EventBus).use(AwsEventBridgeEventBus)
 

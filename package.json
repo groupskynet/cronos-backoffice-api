@@ -12,6 +12,7 @@
     "test:feature": "npm run build && NODE_ENV=test cucumber-js -p ci",
     "configure-eventbridge_sqs": "ts-node -r  tsconfig-paths/register ./src/scripts/configure-eventbridge_sqs.ts",
     "consume_sqs": "ts-node -r tsconfig-paths/register ./src/scripts/consume-sqs.ts",
+    "generate_sqs_tf": "ts-node -r tsconfig-paths/register ./src/scripts/generate-eventbridge_sqs-terraform_files.ts",
     "prepare": "husky"
   },
   "keywords": [],

@@ -16,6 +16,35 @@ import { ZoneCurrency } from '../domain/value_objects/zone/ZoneCurrency'
 export class DynamodbZoneRepository implements ZoneRepository {
   private readonly tableName = 'cronos_backoffice'
   constructor(private readonly connection: DynamodbConnection) {}
+
+  async getZoneByClubId(clubId: string): Promise<Zone | null> {
+
+    const client = this.connection.client
+
+    if (!client) throw new Error('DynamodbClient not found')
+
+    const commandClub = new QueryCommand({
+      TableName: this.tableName,
+      IndexName: 'GSI1',
+      KeyConditionExpression: 'GSI1SK = :sk',
+      ExpressionAttributeValues: {
+        ':pk': `CLUB#`,
+        ':sk': `CLUB#${clubId}`,
+      }
+    })
+
+    const responseClub = await client.send(commandClub)
+
+    if (!responseClub.Items || responseClub.Items.length === 0) return null
+
+    const zoneItem = responseClub.Items[0]
+
+    const zone = await this.getFindbyId(zoneItem.PK)
+
+    if (!zone) return null
+
+    return zone
+  }
   
   async getFindbyName(name: string): Promise<Zone | null> {
     const client = this.connection.client

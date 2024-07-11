@@ -13,7 +13,7 @@ export class DomainEventJsonDeserializer {
   constructor(private readonly eventMapping: Map<string, DomainEventClass>) {}
 
   deserialize(event: string): DomainEvent {
-    const eventData = JSON.parse(event).data as DomainEventJson
+    const eventData = JSON.parse(event) as DomainEventJson
     const eventClass = this.eventMapping.get(eventData.type)
 
     if (!eventClass) {

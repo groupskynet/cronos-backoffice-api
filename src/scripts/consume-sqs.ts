@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-
 import { DeleteMessageCommand, Message, ReceiveMessageCommand, SQSClient } from '@aws-sdk/client-sqs'
 import { container } from '@src/contexts/shared/infrastructure/dependency_injection/diod.config'
 import { DomainEventSubscriber } from '@src/contexts/shared/domain/event/DomainEventSuscriber'
@@ -22,15 +21,14 @@ subscribers.forEach((subscriber) => {
 const deserializer = new DomainEventJsonDeserializer(eventMapping)
 
 const sqsClient = new SQSClient({
-  region: 'us-east-1',
-  endpoint: 'http://127.0.0.1:4566'
+  region: 'us-west-1'
 })
 
 async function main(): Promise<void> {
   await Promise.all(
     subscribers.flatMap((subscriber) => {
       const queueName = subscriber.name().replaceAll('.', '-')
-      const queueUrl = `https://sqs.us-east-1.amazonaws.com/000000000000/${queueName}`
+      const queueUrl = `https://sqs.us-west-1.amazonaws.com/280613358739/${queueName}`
 
       console.log(`Consuming from queue: ${queueUrl}`)
 
@@ -38,7 +36,7 @@ async function main(): Promise<void> {
         const response = await sqsClient.send(
           new ReceiveMessageCommand({
             QueueUrl: queueUrl,
-            MaxNumberOfMessages: 10
+            MaxNumberOfMessages: 1
           })
         )
 
@@ -54,7 +52,6 @@ async function main(): Promise<void> {
 
 async function consume(message: Message, subscriber: DomainEventSubscriber<DomainEvent>, queueUrl: string) {
   const content = JSON.parse(message.Body as string)
-
   const domainEvent = deserializer.deserialize(JSON.stringify(content.detail))
 
   console.log(`Consuming event: ${domainEvent.eventName}`)
