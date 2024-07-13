@@ -26,5 +26,22 @@ export class TicketsCreateDomainEvent extends DomainEvent {
             clubId: this.clubId,
         }
     }
+    static fromPrimitives(aggregateId: string, eventId: string, occurredOn: Date, attributes: DomainEventAttributes): TicketsCreateDomainEvent {
+        console.log(aggregateId)
+        return new TicketsCreateDomainEvent(
+            attributes['ticketId'] as string,
+            attributes['dateTickets'] as Date,
+            attributes['gameId'] as string,
+            attributes['clubId'] as string,
+            attributes['bets'] as {
+                betId: string,
+                nums: number[],
+                amount: number,
+                dateBets: Date,
+            }[],
+            eventId,
+            occurredOn,
+        )
+    }
 
 }

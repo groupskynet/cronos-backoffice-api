@@ -15,7 +15,6 @@ export class DomainEventJsonDeserializer {
   deserialize(event: string): DomainEvent {
     const eventData = JSON.parse(event) as DomainEventJson
     const eventClass = this.eventMapping.get(eventData.type)
-
     if (!eventClass) {
       throw Error(`DomainEvent mapping not found for event ${eventData.type}`)
     }

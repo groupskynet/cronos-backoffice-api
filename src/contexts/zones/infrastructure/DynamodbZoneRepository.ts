@@ -26,7 +26,7 @@ export class DynamodbZoneRepository implements ZoneRepository {
     const commandClub = new QueryCommand({
       TableName: this.tableName,
       IndexName: 'GSI1',
-      KeyConditionExpression: 'GSI1SK = :sk',
+      KeyConditionExpression: 'GSI1PK = :pk and GSI1SK = :sk',
       ExpressionAttributeValues: {
         ':pk': `CLUB#`,
         ':sk': `CLUB#${clubId}`,
@@ -37,9 +37,11 @@ export class DynamodbZoneRepository implements ZoneRepository {
 
     if (!responseClub.Items || responseClub.Items.length === 0) return null
 
-    const zoneItem = responseClub.Items[0]
+    const clubItem = responseClub.Items[0]
 
-    const zone = await this.getFindbyId(zoneItem.PK)
+    const zoneId: string = clubItem.PK.split('#')[1]
+
+    const zone = await this.getFindbyId(zoneId)
 
     if (!zone) return null
 
