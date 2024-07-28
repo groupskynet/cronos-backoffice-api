@@ -24,9 +24,6 @@ export class CreateNewClubService{
         if(clubNameExists) throw new Error(`Club with name ${clubDto.demographyDto.name} already exists in zone`)
             
         zone.addClub(clubDto)
-
-        if(clubDto.balance > 0)
-            zone.editBalance(clubDto.balance, 'add', clubDto.id)
         
         await this.repository.saveOrUpdate(zone)
 

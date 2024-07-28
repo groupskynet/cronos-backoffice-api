@@ -35,31 +35,10 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "FindClubsResponse": {
+    "ResponseBase": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "address": {"dataType":"string","required":true},
-            "balance": {"dataType":"double","required":true},
-            "timeZone": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "FindClubsByZoneResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "zoneId": {"dataType":"string","required":true},
-            "clubs": {"dataType":"array","array":{"dataType":"refObject","ref":"FindClubsResponse"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseBase_FindClubsByZoneResponse_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"ref":"FindClubsByZoneResponse","required":true},
+            "data": {"dataType":"any","required":true},
             "status": {"dataType":"double","required":true},
             "message": {"dataType":"string","required":true},
         },
@@ -167,22 +146,11 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseBase_string_": {
-        "dataType": "refObject",
-        "properties": {
-            "data": {"dataType":"string","required":true},
-            "status": {"dataType":"double","required":true},
-            "message": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateNewClubRequest": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
             "demographyDto": {"ref":"DemographyDto","required":true},
-            "balance": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },

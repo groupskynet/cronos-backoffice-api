@@ -14,7 +14,7 @@ export class CreateNewClubController extends Controller {
   }
 
   @Put('/create/{zoneId}')
-  public async createNewClub(@Path('zoneId') zoneId: string, @Body() body: CreateNewClubRequest) : Promise<ResponseBase<string>> {
+  public async createNewClub(@Path('zoneId') zoneId: string, @Body() body: CreateNewClubRequest) : Promise<ResponseBase> {
     await this.service.handle({ clubDto: body, zoneId })
     return {
       data: body.id,

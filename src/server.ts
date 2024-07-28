@@ -3,7 +3,6 @@ import { json, urlencoded } from 'body-parser'
 import compress from 'compression'
 import Router from 'express-promise-router'
 import helmet from 'helmet'
-import errorHandler from 'errorhandler'
 import * as http from 'http'
 import httpStatus from 'http-status'
 import swaggerUi from 'swagger-ui-express'
@@ -19,6 +18,7 @@ export class Server {
   constructor(port: string) {
     this.port = port
     this.express = express()
+    
     // Configurar CORS
     const corsOptions = {
       origin: 'http://localhost:4200', // Permitir el origen de tu aplicación Angular
@@ -36,8 +36,8 @@ export class Server {
     this.express.use(helmet.hidePoweredBy())
     this.express.use(helmet.frameguard({ action: 'deny' }))
     this.express.use(compress())
+
     const router = Router()
-    router.use(errorHandler())
     this.express.use(router)
 
     RegisterRoutes(this.express)
@@ -46,9 +46,14 @@ export class Server {
       return res.send(swaggerUi.generateHTML(await import('../build/swagger.json')))
     })
 
-    router.use((err: Error, _: Request, res: Response, _next: () => void) => {
-      console.log(err)
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message)
+    // Middleware de manejo de errores
+    this.express.use((err: Error, _: Request, res: Response, _next: () => void) => {
+      console.error(err.stack)
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+        message: err.message,
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        data: null
+      })
     })
   }
 
@@ -56,7 +61,7 @@ export class Server {
     return new Promise((resolve) => {
       const env = this.express.get('env') as string
       this.httpServer = this.express.listen(this.port, () => {
-        console.log(` Mock Backend App is running at http://localhost:${this.port} in ${env} mode`)
+        console.log(`Mock Backend App is running at http://localhost:${this.port} in ${env} mode`)
         console.log('  Press CTRL-C to stop\n')
         resolve()
       })
@@ -73,15 +78,13 @@ export class Server {
         this.httpServer.close((error) => {
           if (error) {
             reject(error)
-
             return
           }
-
           resolve()
         })
+      } else {
+        resolve()
       }
-
-      resolve()
     })
   }
 }
