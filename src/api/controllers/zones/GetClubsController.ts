@@ -1,6 +1,7 @@
 
 import { FindClubsByZoneResponse } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneResponse'
 import { FindClubsByZoneService } from '@contexts/zones/application/findClubsByZone/FindClubsByZoneService'
+import { ResponseBase } from '@src/api/interfaces/ResponseBase'
 import {Controller, Get, Path, Route, Tags } from 'tsoa'
 
 @Route('zones')
@@ -13,7 +14,12 @@ export class GetClubsController extends Controller {
   @Get('/get_clubs/{id}')
   public async getAll(
     @Path('id') id: string
-  ): Promise<FindClubsByZoneResponse> {
-    return await this.service.handle(id)
+  ): Promise<ResponseBase<FindClubsByZoneResponse>> {
+    const response = await this.service.handle(id)
+    return{
+      data: response,
+      status: 200,
+      message: 'Successful query'
+    }
   }
 }

@@ -26,7 +26,7 @@ export class FindClubsByZoneService{
                     name: club.demography.name.value,
                     address: club.demography.address.value,
                     balance: club.balance,
-                    zoneTime: zone.demography.timeZone.value
+                    timeZone: zone.demography.timeZone.value
                 })
             })
         }

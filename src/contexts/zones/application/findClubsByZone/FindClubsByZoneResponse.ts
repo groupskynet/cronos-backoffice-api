@@ -1,10 +1,6 @@
 export interface FindClubsByZoneResponse {
-  
     zoneId: string,
     clubs: FindClubsResponse[]
-
-
-
 }
 
 export interface FindClubsResponse {
@@ -12,5 +8,5 @@ export interface FindClubsResponse {
     name: string;
     address: string;
     balance: number;
-    zoneTime: string;
+    timeZone: string;
 }

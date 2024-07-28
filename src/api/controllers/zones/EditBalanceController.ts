@@ -1,10 +1,11 @@
 import { EditBalanceService } from '@contexts/zones/application/editBalance/EditBalanceService'
+import { OperationType } from '@contexts/zones/domain/interfaces/zone/Types'
 import { Body, Controller, Path, Put, Route, Tags } from 'tsoa'
 
 interface RequestEditBalance {
   
   newBalance: number
-  isAdd: boolean
+  operation: OperationType
   clubId: string
 }
 

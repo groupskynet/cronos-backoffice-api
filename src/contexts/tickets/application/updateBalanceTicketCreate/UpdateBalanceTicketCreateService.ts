@@ -20,7 +20,7 @@ export class UpdateBalanceTicketCreateService {
 
         const balance = bets.reduce((acc, bet) => acc + bet.amount, 0)
 
-        zone.editBalance(balance,true,clubId)
+        zone.editBalance(balance, 'add', clubId)
 
         await this.zoneRepository.saveOrUpdate(zone)
 

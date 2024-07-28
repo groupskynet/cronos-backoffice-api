@@ -8,6 +8,7 @@ import { AggregateRoot } from '@contexts/shared/domain/AggregateRoot'
 import { Maybe } from '@contexts/shared/domain/Maybe'
 import { Uuid } from '@contexts/shared/domain/value_objects/Uuid'
 import { CreateZoneDto } from './interfaces/zone/CreateZoneDto'
+import { OperationType } from './interfaces/zone/Types'
 
 export class Zone extends AggregateRoot {
   private _currency: ZoneCurrency
@@ -73,16 +74,16 @@ export class Zone extends AggregateRoot {
     this._clubs = Maybe.some(newClubs)
   }
 
-  public editBalance(newBalance: number, isAdd: boolean, clubId?: string ): void {
+  public editBalance(newBalance: number, operation: OperationType, clubId?: string ): void {
     if (newBalance <= 0) throw new InvalidArgumentError(`The new balance incorrect, must be positive`)
 
-    if (isAdd && clubId && this._balance - newBalance < 0)
+    if (operation === 'add' && clubId && this._balance - newBalance < 0)
       throw new InvalidArgumentError(`The balance of the zone cannot be negative`)
 
     if (clubId) {
-      this.editBalanceClub(newBalance, isAdd, clubId)
+      this.editBalanceClub(newBalance, 'add', clubId)
     } else {
-      if (isAdd) {
+      if (operation === 'add') {
         this._balance += newBalance
       } else {
         this._balance -= newBalance
@@ -90,12 +91,12 @@ export class Zone extends AggregateRoot {
     }
   }
 
-  private editBalanceClub(newBalance: number, isAdd: boolean, clubId: string) {
+  private editBalanceClub(newBalance: number, operation: OperationType, clubId: string) {
     const club = this._clubs.get().find((x) => x.id === clubId)
 
     if (!club) throw new InvalidArgumentError(`Club ${clubId} was not found`)
 
-    if (isAdd) {
+    if (operation === 'add') {
       club.addBalance(newBalance)
     } else {
       club.substractBalance(newBalance)
@@ -104,7 +105,7 @@ export class Zone extends AggregateRoot {
     newClubs.push(club)
     this._clubs = Maybe.some(newClubs)
 
-    this.editBalance(newBalance, !isAdd)
+    this.editBalance(newBalance, 'substract')
   }
 
   toPrimitives(): unknown {
