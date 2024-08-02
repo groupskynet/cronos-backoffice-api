@@ -14,7 +14,7 @@ export class EditBalanceService {
   }: EditBalanceRequest): Promise<void> {
     const zone = await this.repository.getFindbyId(zoneId)
     if (zone == null) throw new Error(`Zone with id ${zoneId} not found`)
-      console.log({club: zone.clubs.get()})
+      
     zone.editBalance(newBalance, operation, clubId)
 
     await this.repository.saveOrUpdate(zone)

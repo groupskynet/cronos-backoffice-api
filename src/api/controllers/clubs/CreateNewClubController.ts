@@ -1,6 +1,5 @@
-
-import { CreateNewClubRequest } from '@contexts/zones/application/CreatenewClub/CreateNewClubRequest'
-import { CreateNewClubService } from '@contexts/zones/application/CreatenewClub/CreateNewClubService'
+import { CreateNewClubRequest } from '@contexts/zones/application/createNewClub/CreateNewClubRequest'
+import { CreateNewClubService } from '@contexts/zones/application/createNewClub/CreateNewClubService'
 import { ResponseBase } from '@src/api/interfaces/ResponseBase'
 import { Body, Controller, Path, Put, Route, Tags } from 'tsoa'
 
@@ -13,11 +12,11 @@ export class CreateNewClubController extends Controller {
     super()
   }
 
-  @Put('/create/{zoneId}')
-  public async createNewClub(@Path('zoneId') zoneId: string, @Body() body: CreateNewClubRequest) : Promise<ResponseBase> {
-    await this.service.handle({ clubDto: body, zoneId })
+  @Put('/create/:id')
+  public async createNewClub(@Path('id') id: string, @Body() body: CreateNewClubRequest) : Promise<ResponseBase<string>> {
+    await this.service.handle({ clubDto: body, id })
     return {
-      data: body.id,
+      data: id,
       status: 201,
       message: 'club created successfully'
     }

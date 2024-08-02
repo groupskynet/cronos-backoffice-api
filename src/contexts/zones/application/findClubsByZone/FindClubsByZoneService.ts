@@ -18,6 +18,7 @@ export class FindClubsByZoneService{
             zoneId: zone.id,
             clubs: []
         }
+
         if(!zone.clubs.isEmpty())
         {
             zone.clubs.get().forEach((club) => {
@@ -26,7 +27,7 @@ export class FindClubsByZoneService{
                     name: club.demography.name.value,
                     address: club.demography.address.value,
                     balance: club.balance,
-                    timeZone: zone.demography.timeZone.value
+                    timeZone: club.demography.timeZone.value
                 })
             })
         }

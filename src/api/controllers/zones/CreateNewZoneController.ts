@@ -1,5 +1,6 @@
-import { CreateNewZoneRequest } from '@contexts/zones/application/CreateNewZone/CreateNewZoneRequest'
-import { CreateNewZoneService } from '@contexts/zones/application/CreateNewZone/CreateNewZoneService'
+
+import { CreateNewZoneRequest } from '@contexts/zones/application/createNewZone/CreateNewZoneRequest'
+import { CreateNewZoneService } from '@contexts/zones/application/createNewZone/CreateNewZoneService'
 import { Body, Controller, Path, Put, Route, Tags } from 'tsoa'
 
 @Route('zones')
@@ -9,7 +10,7 @@ export class CreateNewZoneController extends Controller {
     super()
   }
 
-  @Put('/create/{id}')
+  @Put('/create/:id')
   public async createNewZone(@Path('id') id: string, @Body() body: CreateNewZoneRequest) {
     await this.service.handle(id, body)
   }

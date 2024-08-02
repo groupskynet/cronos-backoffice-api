@@ -5,6 +5,7 @@ import { InvalidArgumentError } from '@contexts/shared/domain/exceptions/Invalid
 import { Uuid } from '@contexts/shared/domain/value_objects/Uuid'
 import { Maybe } from '@contexts/shared/domain/Maybe'
 import { CLubDto } from './interfaces/club/CLubDto'
+import { UpdateClubRequest } from '../application/updateClub/UpdateClubRequest'
 
 export class Club extends Entity {
   private _recorders: Maybe<Uuid[]>
@@ -43,6 +44,9 @@ export class Club extends Entity {
     this._balance -= newBalance
   }
 
+  public update(request: UpdateClubRequest): void {
+    this._demography = new Demography(request)
+  }
   toPrimitives(): unknown {
     return {
       id: this.id,

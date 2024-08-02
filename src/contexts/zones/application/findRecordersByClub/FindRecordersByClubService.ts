@@ -7,12 +7,12 @@ import { FindRecordersByClubResponse } from './FindRecordersByClubResponse'
 export class FindRecordersByClubService {
   constructor(private readonly zoneRepository: ZoneRepository, private readonly userRepository: UserRepository) {}
 
-  async handle({ zoneId, clubId }: { zoneId: string; clubId: string }): Promise<FindRecordersByClubResponse> {
+  async handle({ zoneId, id }: { zoneId: string; id: string }): Promise<FindRecordersByClubResponse> {
     const zone = await this.zoneRepository.getFindbyId(zoneId)
     if (zone == null) throw new Error(`Zone with id ${zoneId} not found`)
 
-    const club = zone.clubs.get().find((x) => x.id === clubId)
-    if (club === undefined) throw new Error(`Club with id ${clubId} not found`)
+    const club = zone.clubs.get().find((x) => x.id === id)
+    if (club === undefined) throw new Error(`Club with id ${id} not found`)
 
     const recordersResponse: FindRecordersByClubResponse = {
       clubId: '',
@@ -20,7 +20,7 @@ export class FindRecordersByClubService {
       zoneId: ''
     }
 
-    recordersResponse.clubId = clubId
+    recordersResponse.clubId = id
     recordersResponse.zoneId = zoneId
 
     if (!club.recorders.isEmpty()) {

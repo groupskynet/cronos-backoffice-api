@@ -9,6 +9,7 @@ import { Maybe } from '@contexts/shared/domain/Maybe'
 import { Uuid } from '@contexts/shared/domain/value_objects/Uuid'
 import { CreateZoneDto } from './interfaces/zone/CreateZoneDto'
 import { OperationType } from './interfaces/zone/Types'
+import { UpdateClubRequest } from '../application/updateClub/UpdateClubRequest'
 
 export class Zone extends AggregateRoot {
   private _currency: ZoneCurrency
@@ -81,7 +82,7 @@ export class Zone extends AggregateRoot {
       throw new InvalidArgumentError(`The balance of the zone cannot be negative`)
 
     if (clubId) {
-      this.editBalanceClub(newBalance, 'add', clubId)
+      this.editBalanceClub(newBalance, operation, clubId)
     } else {
       if (operation === 'add') {
         this._balance += newBalance
@@ -91,6 +92,18 @@ export class Zone extends AggregateRoot {
     }
   }
 
+  public updateClub(clubId: string, request: UpdateClubRequest): void {
+    const club = this._clubs.isEmpty()? null: this._clubs.get().find((x) => x.id === clubId)
+
+    if (!club) throw new InvalidArgumentError(`Club ${clubId} was not found`)
+
+    club.update(request)
+    
+    const newClubs = this._clubs.get().filter((x) => x.id !== clubId)
+    newClubs.push(club)
+
+    
+  }
   private editBalanceClub(newBalance: number, operation: OperationType, clubId: string) {
     const club = this._clubs.get().find((x) => x.id === clubId)
 
@@ -105,7 +118,10 @@ export class Zone extends AggregateRoot {
     newClubs.push(club)
     this._clubs = Maybe.some(newClubs)
 
-    this.editBalance(newBalance, 'substract')
+    if(operation === 'add') 
+      this.editBalance(newBalance, 'subtract')
+    else
+      this.editBalance(newBalance, 'add')
   }
 
   toPrimitives(): unknown {

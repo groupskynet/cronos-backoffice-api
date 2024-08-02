@@ -7,23 +7,23 @@ export class CreateNewClubService{
     constructor(private readonly repository: ZoneRepository
     ){}
 
-    async handle({clubDto, zoneId}:{clubDto: CreateNewClubRequest, zoneId: string} ): Promise<void>{
+    async handle({clubDto, id}:{clubDto: CreateNewClubRequest, id: string} ): Promise<void>{
         // TODO: validar usuario que contenga la zona con jwt
         
-        const zone = await this.repository.getFindbyId(zoneId)
+        const zone = await this.repository.getFindbyId(clubDto.zoneId)
 
         if(zone == null)
-            throw new Error(`Zone with id ${zoneId} not found`)
+            throw new Error(`Zone with id ${clubDto.zoneId} not found`)
 
-        const club = zone.clubs.get().find((club) => club.id === clubDto.id)
+        const club = zone.clubs.get().find((club) => club.id === id)
 
-        if(!club) throw new Error(`Club with id ${clubDto.id} exists`)
+        if(club) throw new Error(`Club with id ${id} exists`)
         
-        const clubNameExists = zone.clubs.isEmpty()? null: zone.clubs.get().find((club) => club.demography.name.value === clubDto.demographyDto.name)
+        const clubNameExists = zone.clubs.isEmpty()? null: zone.clubs.get().find((club) => club.demography.name.value === clubDto.name)
 
-        if(clubNameExists) throw new Error(`Club with name ${clubDto.demographyDto.name} already exists in zone`)
+        if(clubNameExists) throw new Error(`Club with name ${clubDto.name} already exists in zone`)
             
-        zone.addClub(clubDto)
+        zone.addClub({id: id, demographyDto: {name: clubDto.name, address: clubDto.address, timeZone: clubDto.timeZone}})
         
         await this.repository.saveOrUpdate(zone)
 

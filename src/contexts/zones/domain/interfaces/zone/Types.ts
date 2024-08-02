@@ -1,1 +1,1 @@
-export type OperationType = 'add' | 'substract'
+export type OperationType = 'add' | 'subtract'
