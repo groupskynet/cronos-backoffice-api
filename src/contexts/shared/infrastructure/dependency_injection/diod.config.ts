@@ -7,11 +7,14 @@ import { CreateNewGameOnBallsGenerated } from '@src/contexts/games/application/d
 import { GameRepository } from '@contexts/games/domain/contracts/GameRepository'
 import { DynamodbGameRepository } from '@contexts/games/infrastructure/DynamodbGameRepository'
 import { DynamodbConnection } from '../DynamodbConnection'
+import { AdminRepository } from '@contexts/admin/domain/contracts/AdminRepository'
+import { DynamodbAdminRepository } from '@contexts/admin/infrastructure/DynamodbAdminRepository'
 
 const builder = new ContainerBuilder()
 
 builder.registerAndUse(DynamodbConnection)
 builder.register(GameRepository).use(DynamodbGameRepository)
+builder.register(AdminRepository).use(DynamodbAdminRepository)
 
 const controllers = glob.sync(`src/**/*Controller.ts`, { posix: true })
 
