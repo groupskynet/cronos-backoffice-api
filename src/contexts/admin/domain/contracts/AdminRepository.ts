@@ -3,6 +3,6 @@ import { Admin } from '../Admin'
 
 export abstract class AdminRepository {
       abstract save(admin: Admin): Promise<void>
-      abstract find(id: string): Promise<Admin | null>
+      abstract findById(id: string): Promise<Admin | null>
       abstract findAll(): Promise<Admin[]>
 }

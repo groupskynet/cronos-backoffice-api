@@ -6,6 +6,9 @@ import { AdminPercentage } from '@contexts/admin/domain/value_objects/AdminPerce
 import { AdminUsername } from '@contexts/admin/domain/value_objects/AdminUsername'
 import { AdminPassword } from '@contexts/admin/domain/value_objects/AdminPassword'
 import { AdminDate } from '@contexts/admin/domain/value_objects/AdminDate'
+import { Club } from '@contexts/admin/domain/entity/Club'
+import {Maybe} from "@contexts/shared/domain/Maybe";
+import {InvalidArgumentError} from "@contexts/shared/domain/exceptions/InvalidArgumentError";
 
 export class Admin extends AggregateRoot {
   private _id: AdminId
@@ -14,6 +17,7 @@ export class Admin extends AggregateRoot {
   private _percentage: AdminPercentage
   private _username: AdminUsername
   private _password: AdminPassword
+  private _clubs: Maybe<Club[]>
   private _createdAt: AdminDate
 
   constructor(
@@ -23,6 +27,7 @@ export class Admin extends AggregateRoot {
     percentage: AdminPercentage,
     username: AdminUsername,
     password: AdminPassword,
+    clubs: Maybe<Club[]>,
     createdAt: AdminDate,
   ) {
     super()
@@ -32,11 +37,12 @@ export class Admin extends AggregateRoot {
     this._percentage = percentage
     this._username = username
     this._password = password
+    this._clubs = clubs
     this._createdAt = createdAt
 
   }
 
-  static create(id: string, name: string, balance: number, percentage: number, username: string, password: string): Admin {
+  static create(id: string, name: string, balance: number, percentage: number, username: string, password: string, clubs: Maybe<Club[]>): Admin {
     return new Admin(
       new AdminId(id),
       new AdminName(name),
@@ -44,6 +50,7 @@ export class Admin extends AggregateRoot {
       new AdminPercentage(percentage),
       new AdminUsername(username),
       new AdminPassword(password),
+      clubs,
       new AdminDate(new Date()))
   }
 
@@ -55,8 +62,16 @@ export class Admin extends AggregateRoot {
       percentage: this._percentage.value,
       username: this._username.value,
       password: this._password.value,
+      clubs: !this.clubs.isEmpty()? this.clubs.get().map((club) => club.toPrimitives()): Maybe.none(),
       createdAt: this._createdAt.value
     }
+  }
+
+  public addClub(id: string, name: string, balance: number, demography: any): void {
+    const clubExists = this._clubs.get().find((club)=> club.name === name)
+    if (clubExists) throw new InvalidArgumentError(`Club with ${name} already exists`)
+    const club = Club.create(id, name, balance, demography)
+    this._clubs = Maybe.some([...this._clubs.get(), club])
   }
 
   get id(): string {
@@ -85,6 +100,10 @@ export class Admin extends AggregateRoot {
 
   get createdAt(): Date {
     return this._createdAt.value
+  }
+
+  get clubs(): Maybe<Club[]> {
+    return this._clubs.map((clubs) => clubs)
   }
 
 

@@ -2,6 +2,7 @@ import { Service } from 'diod'
 import { Admin } from '@contexts/admin/domain/Admin'
 import { AdminRepository } from '@contexts/admin/domain/contracts/AdminRepository'
 import CreateAdminCommand from '@contexts/admin/application/commands/create/CreateAdminCommand'
+import {Maybe} from "@contexts/shared/domain/Maybe";
 
 @Service()
 export class CreateAdminService {
@@ -18,7 +19,7 @@ export class CreateAdminService {
       command.percentage,
       command.username,
       command.password,
-
+        Maybe.none(),
     )
     await this.repository.save(admin)
     // this.event_bus.publish(admin.pullDomainEvents())
