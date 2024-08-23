@@ -60,7 +60,6 @@ export class DynamodbAdminRepository implements AdminRepository {
   async getListClubsByAdminId(id: string, client: any): Promise<Maybe<Club[]>> {
     const queryClubs = new QueryCommand({
       TableName: this.tableName,
-      IndexName: 'GSI1',
       KeyConditionExpression: 'PK = :pk and begins_with(SK, :sk)',
       ExpressionAttributeValues: {
         ':pk': `ADMIN#${id}`,
