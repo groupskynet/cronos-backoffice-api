@@ -1,8 +1,7 @@
 import { Service } from 'diod'
-// import { Club } from '@contexts/admin/domain/entity/Club'
 import { CreateClubCommand } from '@contexts/admin/application/commands/createClub/CreateClubCommand'
-// import { ClubRepository } from '@contexts/admin/domain/contracts/ClubRepository'
 import { AdminRepository} from "@contexts/admin/domain/contracts/AdminRepository";
+import {AdminId} from "@contexts/admin/domain/value_objects/AdminId";
 
 @Service()
 export class CreateClubService {
@@ -12,7 +11,7 @@ export class CreateClubService {
     ) {}
 
     async handle(command: CreateClubCommand): Promise<void> {
-        const admin = await this.repository.findById(command.adminId);
+        const admin = await this.repository.findById(new AdminId(command.adminId));
         if (!admin) throw new Error(`Admin with ${command.adminId} not found`)
         const club = admin.clubs.get().find((club)=> club.id === command.id)
         if (club) throw new Error(`Club with ${command.id} already exists`)
@@ -23,12 +22,6 @@ export class CreateClubService {
         admin.addClub(command.id, command.name, command.balance, command.demography)
 
 
-        // const club = Club.create(
-        //     command.id,
-        //     command.name,
-        //     command.balance,
-        //     command.demography,
-        // )
         await this.repository.save(admin)
         // this.event_bus.publish(club.pullDomainEvents())
     }

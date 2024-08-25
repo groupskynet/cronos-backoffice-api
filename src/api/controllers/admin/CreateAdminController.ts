@@ -1,8 +1,9 @@
-import { Body, Controller, Put, Route } from 'tsoa'
+import { Body, Controller, Put, Route, Tags } from 'tsoa'
 import CreateAdminCommand from '@contexts/admin/application/commands/create/CreateAdminCommand'
 import { CreateAdminService } from '@contexts/admin/application/commands/create/CreateAdminService'
 
 @Route('admin')
+@Tags('Admin')
 export class CreateAdminController extends Controller {
   constructor(private readonly service: CreateAdminService) {
     super()

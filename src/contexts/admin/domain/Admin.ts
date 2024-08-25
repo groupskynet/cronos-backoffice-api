@@ -62,8 +62,8 @@ export class Admin extends AggregateRoot {
       percentage: this._percentage.value,
       username: this._username.value,
       password: this._password.value,
-      clubs: !this.clubs.isEmpty()? this.clubs.get().map((club) => club.toPrimitives()): Maybe.none(),
-      createdAt: this._createdAt.value
+      createdAt: this._createdAt.value,
+      clubs: !this.clubs.isEmpty()? this.clubs.get().map((club) => club.toPrimitives()): Maybe.none()
     }
   }
 

@@ -1,8 +1,9 @@
-import { Body, Controller, Put, Route } from 'tsoa'
+import { Body, Controller, Put, Route, Tags } from 'tsoa'
 import { CreateClubCommand } from "@contexts/admin/application/commands/createClub/CreateClubCommand";
 import { CreateClubService } from "@contexts/admin/application/commands/createClub/CreateClubService";
 
 @Route('club')
+@Tags('Clubs')
 export class CreateClubController extends Controller {
     constructor(private readonly service: CreateClubService) {
         super()

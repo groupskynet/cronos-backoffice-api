@@ -26,7 +26,7 @@ export class DynamodbAdminRepository implements AdminRepository {
   private readonly tableName = 'cronos_backoffice'
   constructor(private readonly connection: DynamodbConnection) {}
 
-  async findById(id: string): Promise<Admin | null> {
+  async findById(id: AdminId): Promise<Admin | null> {
     const client = this.connection.client
 
     if (!client) throw new Error('DynamodbClient not found')
@@ -35,7 +35,7 @@ export class DynamodbAdminRepository implements AdminRepository {
       TableName: this.tableName,
       KeyConditionExpression: 'PK = :pk',
       ExpressionAttributeValues: {
-        ':pk': `ADMIN#${id}`
+        ':pk': `ADMIN#${id.value}`
       }
     })
 
@@ -106,16 +106,17 @@ export class DynamodbAdminRepository implements AdminRepository {
 
     if (!response.Items) return []
 
-    return response.Items.map((item) => new Admin(
+
+    return await Promise.all(response.Items.map(async (item) => new Admin(
       new AdminId(item.AdminId),
       new AdminName(item.Name),
       new AdminBalance(item.Balance),
       new AdminPercentage(item.Percentage),
       new AdminUsername(item.Username),
       new AdminPassword(item.Password),
-      Maybe.none(),
+      await this.getListClubsByAdminId(item.AdminId, client),
       new AdminDate(new Date(item.CreatedAt))
-    ))
+    )))
   }
 
   async save(admin: Admin): Promise<void> {
