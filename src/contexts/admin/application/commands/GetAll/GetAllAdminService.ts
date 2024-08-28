@@ -1,5 +1,5 @@
-import {Service} from 'diod'
-import {AdminRepository} from '@contexts/admin/domain/contracts/AdminRepository'
+import { Service } from 'diod'
+import { AdminRepository } from '@contexts/admin/domain/contracts/AdminRepository'
 import { AdminResponse } from "@contexts/admin/application/commands/AdminResponse";
 
 

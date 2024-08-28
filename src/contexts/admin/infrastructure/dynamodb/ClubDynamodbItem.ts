@@ -29,7 +29,6 @@ export class ClubDynamodbItem extends Item {
             Id: {S: this.club.id},
             Name: {S: this.club.name},
             Balance: {N: this.club.balance.toString()},
-            // Demography: { S: JSON.stringify(this.club.demography.toPrimitives()) },
             Demography: {
                 M: {
                     name: {S: this.club.demography._name.value},

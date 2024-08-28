@@ -3,7 +3,7 @@ import { AdminDynamodbItem } from './dynamodb/AdminDynamodbItem'
 import { AdminRepository } from '../domain/contracts/AdminRepository'
 import { Admin } from '../domain/Admin'
 import { Service } from 'diod'
-import { QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb'
 import { TransactWriteItem,TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb'
 import { AdminId } from '@contexts/admin/domain/value_objects/AdminId'
 import { AdminName } from '@contexts/admin/domain/value_objects/AdminName'
@@ -57,7 +57,7 @@ export class DynamodbAdminRepository implements AdminRepository {
     )
   }
 
-  async getListClubsByAdminId(id: string, client: any): Promise<Maybe<Club[]>> {
+  async getListClubsByAdminId(id: string, client: DynamoDBDocumentClient): Promise<Maybe<Club[]>> {
     const queryClubs = new QueryCommand({
       TableName: this.tableName,
       KeyConditionExpression: 'PK = :pk and begins_with(SK, :sk)',

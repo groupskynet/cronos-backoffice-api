@@ -12,7 +12,6 @@ export class CreateClubController extends Controller {
     @Put('/create/{id}')
     async createClub(@Put() id: string, @Body() command: CreateClubCommand): Promise<any> {
         command.id = id
-        // const service = new CreateAdminService(this.container)
         await this.service.handle(command)
         this.setStatus(201)
         return {
