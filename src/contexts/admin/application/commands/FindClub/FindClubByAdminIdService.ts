@@ -7,7 +7,7 @@ import {FindClubByAdminResponse} from "@contexts/admin/application/commands/Find
 export class FindClubByAdminIdService {
   constructor(private readonly repository: AdminRepository) {}
 
-  async handle(id: AdminId): Promise<any> {
+  async handle(id: AdminId): Promise<FindClubByAdminResponse> {
     const admin = await this.repository.findById(id)
       if(admin == null)
           throw new Error(`Admin wiht id ${id.value} not found`)

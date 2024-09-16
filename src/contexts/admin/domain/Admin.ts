@@ -70,7 +70,7 @@ export class Admin extends AggregateRoot {
   public addClub(id: string, name: string, balance: number, demography: any): void {
     const clubExists = this._clubs.get().find((club)=> club.name === name)
     if (clubExists) throw new InvalidArgumentError(`Club with ${name} already exists`)
-    const club = Club.create(id, name, balance, demography)
+    const club = Club.create(id, name, balance, demography, Maybe.none())
     this._clubs = Maybe.some([...this._clubs.get(), club])
   }
 

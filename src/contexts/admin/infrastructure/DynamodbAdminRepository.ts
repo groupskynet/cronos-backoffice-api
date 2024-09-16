@@ -81,6 +81,7 @@ export class DynamodbAdminRepository implements AdminRepository {
               item.Demography.address,
               item.Demography.timeZone
           ),
+          Maybe.none(),
           new ClubDate(new Date(item.CreatedAt))
       ))
     }

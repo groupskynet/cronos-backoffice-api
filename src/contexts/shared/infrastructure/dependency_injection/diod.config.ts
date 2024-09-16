@@ -11,6 +11,8 @@ import { AdminRepository } from '@contexts/admin/domain/contracts/AdminRepositor
 import { DynamodbAdminRepository } from '@contexts/admin/infrastructure/DynamodbAdminRepository'
 import { PetitionRepository } from '@contexts/petition/domain/contracts/PetitionRepository'
 import { DynamodbPetitionRepository } from "@contexts/petition/infrastructure/DynamodbPetitionRepository";
+import { ClubRepository } from '@contexts/admin/domain/contracts/ClubRepository'
+import { DynamodbClubRepository } from '@contexts/admin/infrastructure/DynamodbClubRepository'
 
 const builder = new ContainerBuilder()
 
@@ -18,6 +20,7 @@ builder.registerAndUse(DynamodbConnection)
 builder.register(GameRepository).use(DynamodbGameRepository)
 builder.register(AdminRepository).use(DynamodbAdminRepository)
 builder.register(PetitionRepository).use(DynamodbPetitionRepository)
+builder.register(ClubRepository).use(DynamodbClubRepository)
 
 const controllers = glob.sync(`src/**/*Controller.ts`, { posix: true })
 

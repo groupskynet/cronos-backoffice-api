@@ -1,5 +1,5 @@
 import { Controller, Get, Route, Tags } from 'tsoa'
-import { FindClubByAdminIdService} from "@contexts/admin/application/commands/FindClub/FindClubByAdminIdService";
+import { FindClubByAdminIdService } from '@contexts/admin/application/commands/FindClub/FindClubByAdminIdService'
 import { AdminId } from '@contexts/admin/domain/value_objects/AdminId'
 
 @Route('club')

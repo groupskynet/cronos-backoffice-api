@@ -13,7 +13,7 @@ export class CreateAdminController extends Controller {
   public async createAdmin(@Put() id: string, @Body() request: CreateAdminCommand) {
     request.id = id
     await this.service.handle(request)
-    this.setStatus(200)
+    this.setStatus(201)
     return
   }
 }
